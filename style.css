@@ -4,7 +4,7 @@ body {
   background: linear-gradient(320.85deg, #041832 27.26%, #3468a7 96.03%);
   //font-family: 'Roboto', sans-serif;
   font-family: "Syne Mono", monospace;
-  background-repeat: none;
+  background-repeat: no-repeat;
   height: 100vh;
 }
 
