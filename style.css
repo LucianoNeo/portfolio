@@ -104,6 +104,7 @@ body {
 }
 
 .projetos img {
+  
   border-radius: 20px;
   transition: all 0.5s ease;
 }
@@ -126,4 +127,13 @@ footer img:hover {
   transition: all 0.5s ease;
   transform: scale(1.5);
   filter: grayscale(0%) brightness(100%) blur(0px);
+}
+
+.challenge {
+  margin-left: 20px;
+}
+
+.challenge img{
+  max-width: 155px;
+  margin-left: 20px;
 }
