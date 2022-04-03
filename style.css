@@ -4,7 +4,7 @@ body {
   background: linear-gradient(320.85deg, #041832 27.26%, #3468a7 96.03%);
   //font-family: 'Roboto', sans-serif;
   font-family: "Syne Mono", monospace;
-  background-repeat: no-repeat;
+  //background-repeat: no-repeat;
   height: 100vh;
 }
 
@@ -16,6 +16,8 @@ body {
   margin: 64px;
   box-shadow: 6px 6px 6px #0e1d2f;
   color: #1c1c1c;
+  text-align: center;
+  padding-bottom: 5px;
 }
 .cabecalho {
   display: flex;
@@ -89,6 +91,7 @@ body {
   box-shadow: 2px 2px 4px rgba(16, 16, 16, 0.42);
   border-radius: 20px;
   //min-width: 90vh;
+  text-align:left;
 }
 
 .projetos-itens {
@@ -134,6 +137,21 @@ footer img:hover {
 }
 
 .challenge img{
-  max-width: 155px;
+  max-height: 155px;
   margin-left: 20px;
+}
+
+.challenge .imagens{
+  display: flex;
+}
+
+
+  span{
+  display: none;
+  padding: 5px;
+  background: white;
+  position: absolute;
+  left: 55%;
+  top: 75%;
+  transform: translate(-50%, -50%);
 }
