@@ -1,6 +1,6 @@
 # Luciano Neo — C# / .NET portfolio
 
-Multilingual (Portuguese / English) software engineering portfolio with an electronic RPG visual style, real profile photo, project images, case studies and a printable professional summary.
+My portfolio, in Portuguese and English. Includes work experience, selected projects and a printable professional summary. The visual style takes cues from electronic RPG menus.
 
 ## Website
 
@@ -25,7 +25,7 @@ See [projects/README.md](projects/README.md) for the three independently runnabl
 - **Raid Booking API:** capacity, transactions, idempotency and anonymous player credentials.
 - **Webhook Inbox:** HMAC, deduplication, persistent worker and recovery.
 
-Each has an English README with Portuguese guidance, examples, HTTP integration tests, a Dockerfile and explicit limitations. Created with Codex assistance; the labs are learning/demonstration projects, not production systems.
+Each API has setup instructions, HTTP examples and integration tests. They run locally; the portfolio website does not host them. Development assistance: Codex.
 
 ## Verification
 

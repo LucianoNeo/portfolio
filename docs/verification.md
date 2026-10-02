@@ -16,8 +16,8 @@ Tests use temporary SQLite databases; no production or private data. No throughp
 
 - PT/EN content, project filtering and case-study dialog reviewed in the browser.
 - Desktop and 390px mobile layouts reviewed.
-- Mobile navigation exposes Projects, About and Contact.
-- Printable professional summary includes both languages; a complete employment timeline requires Luciano's confirmed CV.
+- Navigation includes Projects, About, Experience and Contact.
+- Professional history and printable summary use the user-supplied CV in both languages.
 - `node --check` validates JavaScript syntax.
 
 ## Limits

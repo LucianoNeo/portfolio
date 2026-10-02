@@ -1,6 +1,6 @@
 # Raid Booking API
 
-A limited-capacity registration lab inspired by raid scheduling. It has no connection to Pokémon GO servers or player accounts.
+A raid booking API with a fixed number of seats. The main test sends 20 booking requests for the last seat and checks that only one succeeds. Player credentials belong to this API; there is no connection to Pokémon GO accounts.
 
 ## Run
 
@@ -24,7 +24,7 @@ Development API schema: `/openapi/v1.json`. `examples.http` shows the flow. Crea
 | POST | `/raids/{id}/reservations` | Player credential + idempotency key |
 | DELETE | `/reservations/{id}` | Credential of the reservation's player |
 
-## Consistency model
+## Reserving the last seat
 
 ```mermaid
 flowchart LR
@@ -38,7 +38,7 @@ flowchart LR
 
 The seat increment is conditional on `SeatsTaken < Capacity`. Counter and reservation commit together. A check constraint enforces the bounds; a partial unique index permits one active reservation per player/raid. Repeating the same idempotency key returns the original reservation, including its cancelled state. Use a new key to book again after cancelling.
 
-Tests send 20 parallel HTTP booking requests to one seat: exactly one is created and 19 conflict. They also verify replay, repeated cancellation and another player's denied cancellation. These are correctness tests, not throughput benchmarks.
+Tests send 20 parallel HTTP booking requests to one seat: exactly one is created and 19 conflict. They also verify replay, repeated cancellation and another player's denied cancellation. This checks the booking rule; it does not measure requests per second.
 
 ## Configuration and limits
 
@@ -46,4 +46,4 @@ Tests send 20 parallel HTTP booking requests to one seat: exactly one is created
 
 ## Português
 
-Laboratório de reservas com capacidade limitada. A reserva e o contador são gravados na mesma transação; Idempotency-Key permite repetição segura. O teste de concorrência disputa uma única vaga entre 20 jogadores. Credenciais são anônimas e não são contas reais de Pokémon. Execute com os comandos acima e use o arquivo de exemplos.
+Exemplo de reservas com limite de vagas. A reserva e o contador são gravados na mesma transação; Idempotency-Key permite repetição segura. O teste de concorrência disputa uma única vaga entre 20 jogadores. Credenciais são anônimas e não são contas reais de Pokémon. Execute com os comandos acima e use o arquivo de exemplos.

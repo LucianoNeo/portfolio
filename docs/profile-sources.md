@@ -10,3 +10,7 @@ Updated 2026-10-02 from the user-supplied CV-EN-1.pdf (two pages), read as text 
 - Home address, postal code and phone number are not copied to the public site. Existing business email and city remain.
 
 Earlier public corroboration: [LinkedIn](https://br.linkedin.com/in/lucianoneo/en), [owner’s GitHub profile README](https://github.com/LucianoNeo/LucianoNeo/blob/main/README.md).
+
+## User update — 2026-10-02
+
+Luciano described multiple team releases from requirements analysis through deployment, production bug fixes in APIs, microservices and front ends, and one release developed and delivered independently with Vue 2 and .NET 8. This account supplies the updated IngaCode description. No delivery dates, project names or quantitative results were provided.

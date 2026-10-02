@@ -1,6 +1,6 @@
 # NeoTasks .NET
 
-Organization-scoped task and time tracking API. A new .NET implementation inspired by the existing [NeoTasks challenge](https://github.com/LucianoNeo/ingacode-test-backend); it does **not** replace or integrate with the deployed React/Fastify application yet.
+Task and time tracking API with separate data for each organization. Based on the task domain from the [NeoTasks challenge](https://github.com/LucianoNeo/ingacode-test-backend). The deployed React application still uses Fastify; this API runs separately.
 
 ## Run
 
@@ -27,7 +27,7 @@ dotnet run --project neotasks-dotnet/NeoTasks.Api --urls http://localhost:5081
 | PUT | `/api/tasks/{id}` | Organization member; requires current `version` |
 | POST | `/api/tasks/{id}/time` | Organization member; 1–86400 seconds |
 
-## Decisions
+## Access rules and updates
 
 ```mermaid
 flowchart LR
@@ -44,7 +44,7 @@ Tests cover tenant read/write boundaries, role restrictions, time validation, st
 
 ## Configuration and limits
 
-`ConnectionStrings__Database` overrides SQLite location. `Jwt__Key` must contain at least 32 bytes; the sample signing key is available only in Development. Production requires your own key, TLS termination and an identity lifecycle. No refresh tokens, password reset, email verification, rate limiting or audit log yet. Database creation uses EnsureCreated; migrations are required for schema evolution. Time entries are creation-only in this MVP.
+`ConnectionStrings__Database` overrides SQLite location. `Jwt__Key` must contain at least 32 bytes; the sample signing key is available only in Development. A public deployment needs a signing key and HTTPS. No refresh tokens, password reset, email verification, rate limiting or audit log yet. Database creation uses EnsureCreated; migrations are required for schema evolution. Time entries are creation-only in this MVP.
 
 ## Português
 

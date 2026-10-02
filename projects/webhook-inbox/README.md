@@ -1,6 +1,6 @@
 # Webhook Inbox
 
-Signed event intake and a persistent worker. The only implemented effect is a local `points.awarded` ledger entry. Demonstrates deduplication, retries and recovery without pretending to provide exactly-once delivery across external services.
+Receives signed webhooks and processes them in a background worker. A `points.awarded` event adds a points entry to the local database. Repeated deliveries keep the same entry; failed processing is retried up to three times.
 
 ## Run
 
@@ -39,7 +39,7 @@ flowchart LR
   Worker --> Dead[DeadLetter after attempt 3]
 ```
 
-## Failure and replay guarantees
+## Duplicates, retries and restarts
 
 SQLite transactions serialize writers. The worker persists the award and completed status together. A crash before commit rolls both back; a pending event is available after restart. The award primary key is the event ID. This guarantee covers the local database only. External side effects need an outbox and destination idempotency.
 
@@ -49,7 +49,7 @@ Tests cover ten concurrent duplicate deliveries with one effect, changed-payload
 
 ## Configuration
 
-`WebhookSecret` and `AdminKey` are required outside Development; minimum 16 characters. Local examples: `local-demo-webhook-secret` / `local-demo-admin-key`. `ConnectionStrings__Database` controls persistence. `Worker__Enabled=false` disables automatic processing for tests. Public hosting requires TLS and operational hardening; this lab has no distributed broker, retention policy or dashboard.
+`WebhookSecret` and `AdminKey` are required outside Development; minimum 16 characters. Local examples: `local-demo-webhook-secret` / `local-demo-admin-key`. `ConnectionStrings__Database` controls persistence. `Worker__Enabled=false` disables automatic processing for tests. Use HTTPS for public hosting. Event retention, a dashboard and a distributed broker are not implemented.
 
 ## Português
 

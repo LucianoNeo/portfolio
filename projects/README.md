@@ -1,6 +1,6 @@
-# Back-end engineering labs
+# .NET API examples
 
-Three runnable **.NET 10 demonstration APIs**, maintained alongside Luciano Neo's portfolio. They demonstrate specific engineering rules, with HTTP integration tests against a real SQLite database. They are new labs, not claims of production deployments or previous employment deliverables.
+Three small APIs for task tracking, raid bookings and webhook processing. Each runs locally with .NET 10 and SQLite. The HTTP integration tests check the access rules, concurrent requests and failure recovery.
 
 | Project | Engineering focus | Tests |
 | --- | --- | --- |
@@ -21,21 +21,20 @@ No external database is required. Each test uses an isolated temporary database.
 
 Each application is independently runnable. The parent `Directory.Build.props` supplies the target framework and compiler settings; include it when extracting a project into a separate repository.
 
-## Design choices
+## Why SQLite and HTTP tests
 
-- Small vertical API slices keep the rules visible, with EF Core persistence.
-- SQLite lowers setup cost. Its serialized writers make these correctness examples unsuitable as distributed scalability benchmarks.
+- Endpoints and their rules sit together; EF Core handles persistence.
+- SQLite runs without an external server. It serializes writes, so the concurrency tests check correctness rather than throughput.
 - Tests verify behavior through HTTP rather than mocking EF Core.
-- `EnsureCreated` is a lab convenience, not a migration strategy. Schema evolution needs versioned migrations.
+- `EnsureCreated` creates the sample databases. Add migrations before changing the schema on a database you need to keep.
 - Secrets have explicit **development-only** defaults. Production startup requires configured keys. Docker binds to loopback and runs as the non-root `app` user.
-- No fictitious user counts, performance claims or production availability metrics.
 
 ## Planned evolution
 
-PostgreSQL integration tests, versioned migrations, identity lifecycle, rate limiting, deployment with TLS and observability, and integration of NeoTasks .NET with the existing React interface. Webhook external side effects require an outbox and destination idempotency; the current guarantee is scoped to one local database.
+The next useful steps are PostgreSQL tests and migrations, followed by connecting NeoTasks .NET to the React interface. The webhook worker currently writes to its own database; calling another service would require an outbox and idempotency at the destination.
 
 ## Português
 
-Três APIs de demonstração executáveis em .NET 10. Os testes exercitam isolamento, permissões, concorrência, idempotência e recuperação com um banco SQLite real. Não são sistemas publicados em produção. Consulte os READMEs de cada projeto, os exemplos HTTP e o roadmap antes de avaliar seu escopo.
+Três exemplos em .NET 10: tarefas por organização, reservas de raids e processamento de webhooks. Rodam localmente com SQLite. Os READMEs explicam os comandos e as regras verificadas pelos testes.
 
-Created with Codex assistance; review and understand the decisions before presenting these labs in interviews.
+Development assistance: Codex.
