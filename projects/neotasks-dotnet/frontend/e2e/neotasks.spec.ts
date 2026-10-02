@@ -83,7 +83,7 @@ test('recruiter can register, manage the team and track work through the existin
   await expect(page.getByRole('button', { name: 'Editar projeto' })).not.toBeVisible();
   await menu(page, 'TAREFAS');
   await expect(page.getByText('Corrigir total do pedido', { exact: true }).filter({ visible: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Excluir tarefa', exact: true }).click();
+  await page.getByRole('button', { name: 'Excluir tarefa', exact: true }).first().click();
   await page.getByRole('button', { name: 'EXCLUIR', exact: true }).filter({ visible: true }).click();
   await expect(page.getByText('Corrigir total do pedido', { exact: true }).filter({ visible: true })).not.toBeVisible();
   expect(errors).toEqual([]);
