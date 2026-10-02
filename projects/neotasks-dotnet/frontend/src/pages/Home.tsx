@@ -23,6 +23,7 @@ function Home() {
   useEffect(() => {
     let active = true;
     setIsLoading(true);
+    setProjects([]); setTasks([]); setCollaborators([]); setDayMinutes(null); setMonthMinutes(null);
     Promise.all([api.get('/projects'), api.get('/tasks'), api.get('/collaborators'),
       api.post('/daytotalminutes', { daySent: new Date() }), api.get('/monthtotalminutes')])
       .then(([projects, tasks, collaborators, day, month]) => {

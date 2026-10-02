@@ -12,18 +12,7 @@ function Collaborators() {
     const { collaborators, tasks } = useMyContext()
 
     function countTasksByCollaborator(collab: string) {
-        let taskCounts = 0
-        tasks!.forEach(task => {
-            {/* @ts-ignore */ }
-            task.TimeTracker.forEach(tracker => {
-                if (tracker.collaborator) {
-                    if (tracker.collaborator.id === collab) {
-                        taskCounts += 1;
-                    }
-                }
-            });
-        });
-        return taskCounts;
+        return tasks.filter(task => task.TimeTracker.some((tracker: any) => tracker.collaborator?.id === collab)).length;
     }
 
 

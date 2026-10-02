@@ -130,7 +130,7 @@ public static class FrontendEndpoints
         ui.MapPost("/daytotalminutes", async (DayRequest r, ClaimsPrincipal actor, TasksDb db) =>
         {
             var offset = Math.Clamp(r.OffsetMinutes ?? 0, -840, 840);
-            var localDay = r.DaySent?.Date ?? DateTime.UtcNow.AddMinutes(offset).Date;
+            var localDay = r.DaySent?.ToOffset(TimeSpan.FromMinutes(offset)).Date ?? DateTime.UtcNow.AddMinutes(offset).Date;
             var start = DateTime.SpecifyKind(localDay, DateTimeKind.Utc).AddMinutes(-offset);
             return Results.Ok(FormatTime(await SecondsBetween(actor, db, start, start.AddDays(1))));
         });

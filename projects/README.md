@@ -1,40 +1,35 @@
-# .NET API examples
+# Projetos .NET
 
-Three small APIs for task tracking, raid bookings and webhook processing. Each runs locally with .NET 10 and SQLite. The HTTP integration tests check the access rules, concurrent requests and failure recovery.
+Três projetos para estudar tarefas e horas, reservas de raids e processamento de webhooks. O NeoTasks reúne a interface React com uma API .NET e PostgreSQL. Raid Booking e Webhook Inbox são APIs com SQLite.
 
-| Project | Engineering focus | Tests |
+| Projeto | Foco | Verificação |
 | --- | --- | --- |
-| [NeoTasks .NET](neotasks-dotnet/README.md) | JWT, roles, tenant isolation, optimistic concurrency | Organization boundaries, permissions, validation, stale updates |
-| [Raid Booking](raid-booking/README.md) | Capacity, transactions, idempotency | 20 concurrent players for one seat, replay, cancellation ownership |
-| [Webhook Inbox](webhook-inbox/README.md) | HMAC, persistence, retries, local transactional effect | Concurrent duplicates, payload conflict, replay window, restart, dead letters |
+| [NeoTasks · React + .NET](neotasks-dotnet/README.md) | JWT, papéis, isolamento por organização, concorrência e interface integrada | PostgreSQL real, Docker Compose, fluxo de navegador com Playwright e persistência |
+| [Raid Booking](raid-booking/README.md) | Capacidade, transações e idempotência | 20 solicitações concorrentes para uma vaga, repetição e cancelamento |
+| [Webhook Inbox](webhook-inbox/README.md) | HMAC, deduplicação, persistência e retries | Duplicados concorrentes, conflito de payload, janela de replay, restart e dead letters |
 
-## Requirements and verification
+## Avaliar o NeoTasks
 
-Install the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0), then from this folder:
+Na pasta `neotasks-dotnet`, execute `docker compose up --build` e abra http://localhost:8080. O Compose inclui interface, API e PostgreSQL. Não é necessário instalar .NET ou Node separadamente. O [README](neotasks-dotnet/README.md) explica cadastro, permissões, volume e limites.
 
-```sh
-dotnet restore BackendLabs.slnx
-dotnet test BackendLabs.slnx --configuration Release
-```
+## As três APIs
 
-No external database is required. Each test uses an isolated temporary database. Docker is optional: from this folder, `docker compose up --build` starts the three APIs on localhost ports 5081, 5082 and 5083. Each has `/health` and a development-only `/openapi/v1.json`. JSON API documentation is provided; no Swagger UI is bundled.
+O Compose desta pasta mantém as três APIs nas portas localhost 5081, 5082 e 5083. Ele inclui um PostgreSQL para NeoTasks; as outras APIs usam volumes SQLite. Para avaliar a interface NeoTasks, prefira o Compose da pasta daquele projeto.
 
-Each application is independently runnable. The parent `Directory.Build.props` supplies the target framework and compiler settings; include it when extracting a project into a separate repository.
+Os projetos usam .NET 10. `Directory.Build.props` fornece o framework e as opções de compilação; inclua esse arquivo se extrair uma pasta para outro repositório.
 
-## Why SQLite and HTTP tests
+Os testes usam requisições HTTP e bancos reais. Para executar `dotnet test BackendLabs.slnx --configuration Release`, é preciso configurar uma instância PostgreSQL de testes em `NEOTASKS_TEST_DATABASE`, com um usuário que possa criar e excluir bancos isolados. Os detalhes estão no README do NeoTasks. As APIs de reservas e webhooks usam arquivos temporários SQLite. O GitHub Actions prepara esses bancos no runner.
 
-- Endpoints and their rules sit together; EF Core handles persistence.
-- SQLite runs without an external server. It serializes writes, so the concurrency tests check correctness rather than throughput.
-- Tests verify behavior through HTTP rather than mocking EF Core.
-- `EnsureCreated` creates the sample databases. Add migrations before changing the schema on a database you need to keep.
-- Secrets have explicit **development-only** defaults. Production startup requires configured keys. Docker binds to loopback and runs as the non-root `app` user.
+## Decisões e próximos passos
 
-## Planned evolution
+- EF Core faz a persistência; as regras e endpoints ficam próximos para facilitar a leitura.
+- SQLite nos outros dois exemplos simplifica o setup, mas seus testes de concorrência verificam comportamento, sem afirmar capacidade de atendimento.
+- `EnsureCreated` cria os bancos de demonstração. Um banco duradouro precisa de migrations.
+- Os containers das APIs usam o usuário `app`. As portas publicadas são vinculadas a localhost.
+- O worker de webhooks grava efeitos no próprio banco; integrar outro serviço exigiria tratar idempotência e entrega, por exemplo com outbox.
 
-The next useful steps are PostgreSQL tests and migrations, followed by connecting NeoTasks .NET to the React interface. The webhook worker currently writes to its own database; calling another service would require an outbox and idempotency at the destination.
+## English
 
-## Português
-
-Três exemplos em .NET 10: tarefas por organização, reservas de raids e processamento de webhooks. Rodam localmente com SQLite. Os READMEs explicam os comandos e as regras verificadas pelos testes.
+NeoTasks combines an existing React interface with a .NET 10 API and PostgreSQL. Run its own Compose stack to evaluate the complete application. Raid Booking and Webhook Inbox remain independent .NET APIs backed by SQLite. Each README explains setup, tested behavior and remaining work.
 
 Development assistance: Codex.

@@ -225,38 +225,46 @@ const translations = {
 const repo = "https://github.com/LucianoNeo/portfolio/tree/main/projects/";
 const projects = [
   {
-    id: "neotasks-dotnet",
-    name: "NeoTasks .NET",
-    category: "backend",
-    featured: true,
-    status: "lab",
-    image: "assets/neotasks-dotnet.svg",
-    tech: ["C#", ".NET 10", "EF Core", "SQLite", "JWT", "xUnit"],
-    code: repo + "neotasks-dotnet",
-    pt: "API de tarefas e horas por organização. O token define quem pode acessar os dados; versões de tarefa evitam sobrescrever uma atualização recente.",
-    en: "Task and time-tracking API for separate organizations. Tokens control data access; task versions prevent overwriting a newer update.",
-    study: {
-      pt: [
-        "Organizar tarefas e apontamentos de horas mantendo os dados de cada organização separados.",
-        "Versão em .NET do domínio de tarefas do NeoTasks. Cadastro de organização, login JWT, membros, projetos, tarefas e apontamentos. Ainda não substitui o back-end da demonstração React existente.",
-        "Tenant obtido do token validado, filtros por organização e chaves compostas no banco. Papel Owner para criar projetos e membros. Versão de tarefa como token de concorrência. SQLite facilita a execução local.",
-        "Testes HTTP com banco SQLite real: acesso entre organizações recusado, restrições de papel, horas inválidas, versão desatualizada e autenticação.",
-        "Sem recuperação de senha, confirmação de e-mail, refresh token ou integração com a interface antiga. O banco é criado com EnsureCreated. Faltam migrações e limite de requisições.",
-      ],
-      en: [
-        "Organize tasks and time entries while keeping each organization’s data separate.",
-        "A .NET version of the NeoTasks task domain. Organization signup, JWT login, members, projects, tasks and time entries. It does not yet replace the back end of the existing React demo.",
-        "Tenant identity comes from the validated token, with organization filters and composite database keys. Owner role controls project and member creation. Task version is a concurrency token. SQLite simplifies local setup.",
-        "HTTP tests with a real SQLite database cover cross-organization access denial, role restrictions, invalid time entries, stale versions and authentication.",
-        "No password recovery, email verification, refresh tokens or integration with the old UI. The database uses EnsureCreated. Migrations and request limiting are still needed.",
-      ],
-    },
-  },
+  "id": "neotasks-dotnet",
+  "name": "NeoTasks · React + .NET",
+  "category": "backend",
+  "featured": true,
+  "status": "lab",
+  "image": "assets/neotasks.png",
+  "tech": [
+    "C#",
+    ".NET 10",
+    "React",
+    "PostgreSQL",
+    "Docker Compose",
+    "JWT",
+    "Playwright"
+  ],
+  "code": "https://github.com/LucianoNeo/portfolio/tree/main/projects/neotasks-dotnet",
+  "pt": "Reaproveitei minha interface React e conectei a uma API .NET com PostgreSQL. Projetos, tarefas, equipe e horas em uma aplicação que você pode executar com Docker Compose.",
+  "en": "I reused my React interface and connected it to a .NET API with PostgreSQL. Projects, tasks, team members and time tracking in an application you can run with Docker Compose.",
+  "study": {
+    "pt": [
+      "Reunir projetos, tarefas e horas do time, com dados separados por organização.",
+      "Adaptei os componentes da minha interface React para uma API em C#/.NET. Incluí cadastro de organização, login, gestão de equipe, tarefas e apontamentos. Interface, API e PostgreSQL sobem juntos com Docker Compose.",
+      "A organização vem do JWT. Owner gerencia projetos e colaboradores; membros trabalham nas tarefas. Atualizações usam controle de concorrência e os horários são armazenados em UTC. O Nginx atende a interface e encaminha as chamadas à API.",
+      "Testes HTTP usam PostgreSQL real. O GitHub Actions compila o Compose e executa o fluxo no Chromium com Playwright, incluindo cadastro, permissões, edição, horas e persistência após reiniciar os containers.",
+      "É uma demonstração para avaliação local; o README explica como executar. Ainda faltam recuperação de senha, renovação de token, auditoria, paginação do contrato da interface e migrations."
+    ],
+    "en": [
+      "Bring together the team's projects, tasks and time entries while separating each organization's data.",
+      "I adapted the components from my React interface to a C#/.NET API. Organization signup, login, team management, tasks and time entries are included. Docker Compose starts the interface, API and PostgreSQL together.",
+      "Organization identity comes from the JWT. Owners manage projects and team members; members work on tasks. Updates use concurrency checks and timestamps are stored in UTC. Nginx serves the interface and forwards API requests.",
+      "HTTP tests use real PostgreSQL. GitHub Actions builds the Compose stack and runs the flow in Chromium with Playwright, covering signup, permissions, edits, time entries and persistence after container restarts.",
+      "This is a demonstration for local evaluation; the README explains how to run it. Password recovery, token renewal, auditing, pagination for the UI contract and migrations are still missing."
+    ]
+  }
+},
   {
     id: "neotasks",
-    name: "NeoTasks",
+    name: "NeoTasks · desafio original",
     category: "apps",
-    featured: true,
+    featured: false,
     status: "product",
     image: "assets/neotasks.png",
     tech: ["React", "Fastify", "Prisma", "PostgreSQL"],
@@ -271,14 +279,14 @@ const projects = [
         "Desafio técnico com interface React e API Fastify documentadas em repositórios separados.",
         "Prisma organiza a persistência PostgreSQL; a separação cliente/API permite evoluir cada camada.",
         "Demonstração web, código do cliente e código da API disponíveis nos links. O README registra o contexto do desafio.",
-        "A aplicação usa Fastify. A nova API .NET ainda precisa ser conectada à interface React.",
+        "Esta é a versão original em Fastify. A interface também foi integrada à nova API .NET no projeto NeoTasks · React + .NET.",
       ],
       en: [
         "Organize projects, tasks and hours in an interface connected to a back end.",
         "A technical challenge with a React interface and Fastify API documented in separate repositories.",
         "Prisma handles PostgreSQL persistence; separating client and API allows independent evolution.",
         "Web demo, client source and API source are linked. The README records the challenge context.",
-        "The application uses Fastify. The new .NET API still needs to be connected to the React interface.",
+        "This is the original Fastify version. The interface has also been integrated with the new .NET API in NeoTasks · React + .NET.",
       ],
     },
   },

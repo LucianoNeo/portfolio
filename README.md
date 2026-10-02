@@ -21,7 +21,7 @@ Open `http://localhost:4173`. Language preference is stored locally when browser
 
 See [projects/README.md](projects/README.md) for the three independently runnable .NET 10 labs:
 
-- **NeoTasks .NET:** organizations, JWT, roles, tasks and time tracking.
+- **NeoTasks · React + .NET:** existing React interface integrated with a .NET API and PostgreSQL; one Docker Compose command.
 - **Raid Booking API:** capacity, transactions, idempotency and anonymous player credentials.
 - **Webhook Inbox:** HMAC, deduplication, persistent worker and recovery.
 
@@ -34,7 +34,7 @@ dotnet test projects/BackendLabs.slnx --configuration Release
 node --check script.js
 ```
 
-The GitHub Actions workflow validates website JavaScript and restores, builds and runs all back-end integration tests. The public static Site is published separately. Docker recipes are optional.
+GitHub Actions validates the website and integration tests. NeoTasks additionally builds and starts Docker Compose and exercises the React interface with Playwright. Its API tests require PostgreSQL; see its README. The public static Site is published separately. Docker recipes are optional.
 
 ## Content accuracy
 
@@ -42,8 +42,8 @@ The GitHub Actions workflow validates website JavaScript and restores, builds an
 - Existing .NET 6 studies remain accessible as earlier work.
 - Redis Rate Limiting integrates a third-party library; it does not claim authorship of that library.
 - Professional experience, roles, dates, education and training are sourced from the user-supplied CV. The original PDF and residential contact details are not published. See `docs/profile-sources.md`.
-- The NeoTasks React demo still uses its original Fastify back end.
-- Game/mod assets retain their project origins and credits. Project screenshots are from their respective repositories; the three lab images are architecture diagrams.
+- The original NeoTasks demo still uses Fastify. The integrated version in projects/neotasks-dotnet uses .NET and PostgreSQL.
+- Game/mod assets retain their project origins and credits. Project screenshots are from their respective repositories; NeoTasks shows the reused React interface; the other lab images are architecture diagrams.
 
 ## Português
 
