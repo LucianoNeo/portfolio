@@ -18,3 +18,10 @@ Luciano described multiple team releases from requirements analysis through depl
 ## AI-assisted development — user update, 2026-10-02
 
 Luciano supplied a focus on AI-assisted development with Claude Code, Codex, Hermes and OpenClaw. The website and summary describe an area of practice, without claiming a formal qualification, certification or quantified productivity gain. No attribution of these tools to the existing sample projects is inferred.
+
+
+## SaaS administration and contracting — user update, 2026-10-02
+
+Luciano confirmed that NeoScan is a SaaS he administers for Pokémon GO players. This activity is fully remote and parallel to his primary work, which he provides as an independent contractor (PJ) for IngaCode. No ownership, revenue, subscriber count or authorship of the complete SaaS is inferred.
+
+The public site [NeoScan / Moltres Scan](https://neoscan.com.br/) was consulted on 2026-10-02. It identifies Moltres Scan as the current brand of NeoScan and describes real-time maps for Pokémon, raids, quests and Team Rocket, plus Discord alerts. The experience description reflects service administration; the separately listed NeoScan Raids repository remains a distinct application.
