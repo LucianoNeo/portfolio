@@ -1,3 +1,4 @@
+import {useEffect,useState} from 'react';
 import { Resolver, useForm, Controller } from 'react-hook-form';
 import { getApiError, api } from '../services/Api';
 import { useMyContext } from '../contexts/MyContext';
@@ -55,6 +56,8 @@ interface Iprops {
 
 export default function CreateTaskModal({ visible, close }: Iprops) {
     const { setError, register, handleSubmit, reset, formState: { errors } } = useForm<FormData>({ resolver });
+    const [options,setOptions]=useState<any[]>([]);
+    useEffect(()=>{if(visible)api.get("/project-options").then(({data})=>setOptions(data)).catch(()=>{});},[visible]);
     const { setProjects, projects, setTasks, setIsLoading, collaborators, setDayMinutes, setMonthMinutes, SuccessToast, ErrorToast } = useMyContext()
 
 

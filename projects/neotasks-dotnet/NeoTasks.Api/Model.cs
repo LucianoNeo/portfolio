@@ -48,6 +48,7 @@ public sealed class TimeEntry
 }
 public sealed class TasksDb(DbContextOptions<TasksDb> options) : DbContext(options)
 {
+    public bool DesignBaseline {get;set;}
     public DbSet<User> Users => Set<User>();
     public DbSet<Organization> Organizations => Set<Organization>();
     public DbSet<WorkProject> Projects => Set<WorkProject>();
@@ -63,9 +64,12 @@ public sealed class TasksDb(DbContextOptions<TasksDb> options) : DbContext(optio
     }
     protected override void OnModelCreating(ModelBuilder b)
     {
-        b.Entity<AccessToken>().HasIndex(x=>x.Hash).IsUnique();
-        b.Entity<AccessToken>().HasOne<User>().WithMany().HasForeignKey(x=>x.UserId);
-        b.Entity<AuditRecord>().HasIndex(x=>new{x.OrganizationId,x.Id});
+        if(DesignBaseline){b.Ignore<AccessToken>();b.Ignore<AuditRecord>();b.Entity<User>().Ignore(u=>u.SecurityStamp).Ignore(u=>u.EmailVerified);}
+        else {
+          b.Entity<AccessToken>().HasIndex(x=>x.Hash).IsUnique();
+          b.Entity<AccessToken>().HasOne<User>().WithMany().HasForeignKey(x=>x.UserId);
+          b.Entity<AuditRecord>().HasIndex(x=>new{x.OrganizationId,x.Id});
+        }
         b.Entity<User>().HasIndex(x => x.Email).IsUnique();
         b.Entity<User>().HasAlternateKey(x => new { x.Id, x.OrganizationId });
         b.Entity<User>().HasOne<Organization>().WithMany().HasForeignKey(x => x.OrganizationId);

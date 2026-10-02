@@ -29,8 +29,10 @@ public static class FrontendEndpoints
 
         var ui = app.MapGroup("/app-api").RequireAuthorization();
         ui.MapGet("/validatetoken", () => Results.Ok(new { valid = true }));
-        ui.MapGet("/projects", async (ClaimsPrincipal actor, TasksDb db) => Results.Ok((await Snapshot(actor, db)).Projects));
-        ui.MapGet("/tasks", async (ClaimsPrincipal actor, TasksDb db) => Results.Ok((await Snapshot(actor, db)).Tasks));
+        ui.MapGet("/projects", async (int? page,string? q, HttpContext ctx,ClaimsPrincipal actor, TasksDb db) => {var query=db.Projects.Where(x=>x.OrganizationId==Org(actor));if(!string.IsNullOrWhiteSpace(q))query=query.Where(x=>x.Name.Contains(q));ctx.Response.Headers["X-Total-Count"]=(await query.CountAsync()).ToString();return Results.Ok((await Snapshot(actor,db,page??1,q,true)).Projects);});
+        ui.MapGet("/tasks", async (int? page,string? q,string? filterBy,HttpContext ctx,ClaimsPrincipal actor, TasksDb db) => {var query=TaskQuery(Org(actor),db,q,filterBy);ctx.Response.Headers["X-Total-Count"]=(await query.CountAsync()).ToString();return Results.Ok((await Snapshot(actor,db,page??1,q,false,filterBy)).Tasks);});
+        ui.MapGet("/counts",async(ClaimsPrincipal actor,TasksDb db)=>{var org=Org(actor);return Results.Ok(new{projects=await db.Projects.CountAsync(p=>p.OrganizationId==org),tasks=await db.Tasks.CountAsync(t=>t.OrganizationId==org),collaborators=await db.Users.CountAsync(u=>u.OrganizationId==org)});});
+        ui.MapGet("/project-options",async(ClaimsPrincipal actor,TasksDb db)=>Results.Ok(await db.Projects.AsNoTracking().Where(p=>p.OrganizationId==Org(actor)).OrderBy(p=>p.Name).Select(p=>new{p.Id,p.Name}).ToListAsync()));
         ui.MapGet("/collaborators", async (ClaimsPrincipal actor, TasksDb db) =>
         {
             var org = Org(actor);
@@ -161,12 +163,26 @@ public static class FrontendEndpoints
         var org = Org(actor); var entries = await db.TimeEntries.AsNoTracking().Where(x => x.OrganizationId == org && x.StartDate != null && x.EndDate != null).ToListAsync();
         return entries.Sum(x => Math.Max(0L, (long)((x.EndDate!.Value < end ? x.EndDate.Value : end) - (x.StartDate!.Value > start ? x.StartDate.Value : start)).TotalSeconds));
     }
-    private static async Task<(List<ProjectView> Projects, List<TaskView> Tasks)> Snapshot(ClaimsPrincipal actor, TasksDb db)
+    private static IQueryable<WorkTask> TaskQuery(Guid org,TasksDb db,string? q,string? filterBy) {
+        var query=db.Tasks.AsNoTracking().Where(x=>x.OrganizationId==org);
+        if(!string.IsNullOrWhiteSpace(q)) {
+            if(filterBy=="project")query=query.Where(t=>db.Projects.Any(p=>p.Id==t.ProjectId&&p.OrganizationId==org&&p.Name.Contains(q)));
+            else if(filterBy=="collaborator")query=query.Where(t=>db.TimeEntries.Any(e=>e.TaskId==t.Id&&e.OrganizationId==org&&db.Users.Any(u=>u.Id==e.CollaboratorId&&u.OrganizationId==org&&u.Name.Contains(q))));
+            else query=query.Where(t=>t.Title.Contains(q));
+        }
+        return query;
+    }
+    private static async Task<(List<ProjectView> Projects, List<TaskView> Tasks)> Snapshot(ClaimsPrincipal actor, TasksDb db,int page=1,string? q=null,bool projectPage=false,string? filterBy=null)
     {
         var org = Org(actor);
-        var projects = await db.Projects.AsNoTracking().Where(x => x.OrganizationId == org).OrderBy(x => x.Name).ToListAsync();
-        var tasks = await db.Tasks.AsNoTracking().Where(x => x.OrganizationId == org).OrderBy(x => x.Title).ToListAsync();
-        var entries = await db.TimeEntries.AsNoTracking().Where(x => x.OrganizationId == org).ToListAsync();
+        var projectQuery=db.Projects.AsNoTracking().Where(x=>x.OrganizationId==org);
+        if(projectPage&&!string.IsNullOrWhiteSpace(q))projectQuery=projectQuery.Where(x=>x.Name.Contains(q));
+        var projects=await (projectPage?projectQuery.OrderBy(x=>x.Name).ThenBy(x=>x.Id).Skip((Math.Clamp(page,1,100000)-1)*20).Take(20):projectQuery).ToListAsync();
+        var projectIds=projects.Select(p=>p.Id).ToArray();
+        var taskQuery=TaskQuery(org,db,projectPage?null:q,filterBy);
+        var tasks=await (projectPage?taskQuery.Where(t=>projectIds.Contains(t.ProjectId)):taskQuery.OrderBy(x=>x.Title).ThenBy(x=>x.Id).Skip((Math.Clamp(page,1,100000)-1)*20).Take(20)).ToListAsync();
+        var taskIds=tasks.Select(t=>t.Id).ToArray();
+        var entries = await db.TimeEntries.AsNoTracking().Where(x => x.OrganizationId == org&&taskIds.Contains(x.TaskId)).ToListAsync();
         var users = await db.Users.AsNoTracking().Where(x => x.OrganizationId == org).ToDictionaryAsync(x => x.Id);
         var projectMap = projects.ToDictionary(x => x.Id);
         var taskViews = tasks.Select(t => new TaskView(t.Id, t.Title, t.Description, new ProjectSummary(t.ProjectId, projectMap[t.ProjectId].Name),

@@ -31,11 +31,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 builder.Services.AddAuthorization();
 var app = builder.Build();
 app.UseExceptionHandler();
+app.Use(async(ctx,next)=>{
+    if(!HttpMethods.IsGet(ctx.Request.Method)&&ctx.Request.Headers.Origin.FirstOrDefault() is string origin&&(!Uri.TryCreate(origin,UriKind.Absolute,out var uri)||uri.Authority!=ctx.Request.Host.Value)){ctx.Response.StatusCode=403;return;}
+    await next();
+});
 app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 app.Use(async(ctx,next)=>{var db=ctx.RequestServices.GetRequiredService<TasksDb>();db.AuditActor=ctx.User.FindFirstValue("sub")??"anonymous";if(Guid.TryParse(ctx.User.FindFirstValue("org"),out var org))db.AuditOrganization=org;await next();});
-using (var scope = app.Services.CreateScope()) await scope.ServiceProvider.GetRequiredService<TasksDb>().Database.MigrateAsync();
+using(var scope=app.Services.CreateScope())await SchemaUpgrade.Apply(scope.ServiceProvider.GetRequiredService<TasksDb>());
 if (app.Environment.IsDevelopment()) app.MapOpenApi();
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 

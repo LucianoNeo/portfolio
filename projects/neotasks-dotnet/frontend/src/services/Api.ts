@@ -11,6 +11,7 @@ export function getApiError(error: unknown): string {
     return typeof error === 'string' ? error : 'Não foi possível concluir a operação.';
 }
 api.interceptors.request.use(config => {
+    if(['/projects','/tasks'].includes(config.url||''))config.params={page:Number(sessionStorage.getItem('page:'+config.url)||1),q:sessionStorage.getItem('q:'+config.url)||'',filterBy:sessionStorage.getItem('filterBy:'+config.url)||'task',...config.params};
     const token = sessionStorage.getItem('neotasks:token');
     if (token) config.headers.Authorization = 'Bearer ' + token;
     const offsetMinutes = -new Date().getTimezoneOffset();
@@ -19,7 +20,10 @@ api.interceptors.request.use(config => {
     return config;
 });
 let renewal: Promise<string> | null = null;
-api.interceptors.response.use(response => response, async error => {
+api.interceptors.response.use(response => {
+    if(['/projects','/tasks'].includes(response.config.url||''))window.dispatchEvent(new CustomEvent('neotasks:collection',{detail:{url:response.config.url,total:Number(response.headers['x-total-count']||0)}}));
+    return response;
+}, async error => {
     const config=error.config;
     if(error.response?.status===401 && !config?._retried && !['/login','/refresh','/register'].includes(config?.url)) {
         config._retried=true;

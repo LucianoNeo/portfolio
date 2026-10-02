@@ -67,7 +67,7 @@ function Menu({ open, setPage, setClose, close }: Iprops) {
                         setClose(!close)
                     }}
                     className='flex gap-4 hover:text-gray-900 text-right justify-end cursor-pointer'>
-                    <span>RELATÃ“RIO</span>
+                    <span>RELATÓRIO</span>
                     <BsCardList size={26} />
 
                 </li>

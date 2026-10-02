@@ -2,6 +2,7 @@ import { useMyContext } from "../contexts/MyContext"
 
 interface Iprops {
 
+    counts: {projects:number;tasks:number;collaborators:number}
     setPage: Function
     projects: [] | null
     tasks: [] | null
@@ -9,7 +10,7 @@ interface Iprops {
     monthMinutes: String | null
 }
 
-function Dashboard({ setPage, projects, tasks, dayMinutes, monthMinutes }: Iprops) {
+function Dashboard({ counts, setPage, projects, tasks, dayMinutes, monthMinutes }: Iprops) {
     const { collaborators } = useMyContext()
     return (
         <>
@@ -28,7 +29,7 @@ function Dashboard({ setPage, projects, tasks, dayMinutes, monthMinutes }: Iprop
                         {!projects ?
                             (<div>Carregando</div>)
                             : (
-                                <span className="text-9xl font-extrabold text-gray-500 text-right">{projects.length}</span>
+                                <span className="text-9xl font-extrabold text-gray-500 text-right">{counts.projects}</span>
                             )}
                     </div>
 
@@ -40,7 +41,7 @@ function Dashboard({ setPage, projects, tasks, dayMinutes, monthMinutes }: Iprop
                         {!tasks ?
                             (<div>Carregando</div>)
                             : (
-                                <span className="text-9xl font-extrabold text-gray-500 text-right">{tasks.length}</span>
+                                <span className="text-9xl font-extrabold text-gray-500 text-right">{counts.tasks}</span>
                             )}
                     </div>
 
@@ -50,7 +51,7 @@ function Dashboard({ setPage, projects, tasks, dayMinutes, monthMinutes }: Iprop
                         onClick={() => setPage('collaborators')}
                         className="bg-slate-900 w-[100%] md:w-[32%] h-[200px] mt-4  p-4 rounded flex justify-between flex-col cursor-pointer hover:bg-slate-800 transition-all">
                         <h2 className="text-xl font-extrabold text-left">COLABORADORES</h2>
-                        <span className="text-9xl font-extrabold text-gray-500 text-right">{collaborators?.length}</span>
+                        <span className="text-9xl font-extrabold text-gray-500 text-right">{counts.collaborators}</span>
                     </div>
 
                     <div

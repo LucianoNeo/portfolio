@@ -1,3 +1,4 @@
+import {useEffect,useState} from 'react';
 import { Resolver, useForm, Controller } from 'react-hook-form';
 import { getApiError, api } from '../services/Api';
 import { useMyContext } from '../contexts/MyContext';
@@ -65,6 +66,8 @@ export default function EditTaskModal({ visible, close, name, id, projectId, des
     });
 
 
+    const [options,setOptions]=useState<any[]>([]);
+    useEffect(()=>{if(visible)api.get("/project-options").then(({data})=>setOptions(data)).catch(()=>{});},[visible]);
     const { setProjects, projects, setTasks, setIsLoading, setDayMinutes, setMonthMinutes, SuccessToast, ErrorToast } = useMyContext()
 
     async function editTask(data: FormData, id: string) {
