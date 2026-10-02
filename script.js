@@ -92,7 +92,7 @@ const translations = {
     contribution: "Implementação",
     decisions: "Decisões técnicas",
     proof: "Testes e código",
-    limits: "O que falta",
+    limits: "Como executar",
     close: "Fechar detalhes",
     complete: "Aplicação completa · Docker Compose",
     archive: "Estudo anterior · .NET 6",
@@ -194,7 +194,7 @@ const translations = {
     contribution: "Implementation",
     decisions: "Technical decisions",
     proof: "Tests and source",
-    limits: "Remaining work",
+    limits: "How to run",
     close: "Close project details",
     complete: "Complete application · Docker Compose",
     archive: "Earlier study · .NET 6",
@@ -222,22 +222,22 @@ const projects = [
       "Playwright"
     ],
     "code": "https://github.com/LucianoNeo/portfolio/tree/main/projects/neotasks-dotnet",
-    "pt": "Reaproveitei minha interface React e conectei a uma API .NET com PostgreSQL. Projetos, tarefas, equipe e horas em uma aplicação que você pode executar com Docker Compose.",
-    "en": "I reused my React interface and connected it to a .NET API with PostgreSQL. Projects, tasks, team members and time tracking in an application you can run with Docker Compose.",
+    "pt": "Projetos, tarefas e horas do time com dados separados por organização. Interface React, API .NET e PostgreSQL, com recuperação de senha, renovação de sessão, auditoria e busca paginada. Executável com Docker Compose.",
+    "en": "Team projects, tasks and time entries with separate organization data. React interface, .NET API and PostgreSQL, with password recovery, session renewal, audit history and paginated search. Runs with Docker Compose.",
     "study": {
       "pt": [
-        "Reunir projetos, tarefas e horas do time, com dados separados por organização.",
-        "Adaptei os componentes da minha interface React para uma API em C#/.NET. Incluí cadastro de organização, login, gestão de equipe, tarefas e apontamentos. Interface, API e PostgreSQL sobem juntos com Docker Compose.",
-        "A organização vem do JWT. Owner gerencia projetos e colaboradores; membros trabalham nas tarefas. Atualizações usam controle de concorrência e os horários são armazenados em UTC. O Nginx atende a interface e encaminha as chamadas à API.",
-        "Testes HTTP usam PostgreSQL real. O GitHub Actions compila o Compose e executa o fluxo no Chromium com Playwright, incluindo cadastro, permissões, edição, horas e persistência após reiniciar os containers.",
-        "É uma demonstração para avaliação local; o README explica como executar. Ainda faltam recuperação de senha, renovação de token, auditoria, paginação do contrato da interface e migrations."
+        "Reunir projetos, tarefas e horas do time, mantendo os dados de cada organização separados.",
+        "Adaptei minha interface React para uma API C#/.NET e PostgreSQL. Completei cadastro, equipe, tarefas, apontamentos, confirmação de e-mail, recuperação de senha e auditoria. O Compose também entrega uma caixa de e-mail para testar os fluxos.",
+        "Owner gerencia projetos e colaboradores; membros trabalham nas tarefas. O acesso usa JWT e um refresh token rotativo em cookie HttpOnly. A busca e a paginação são feitas no servidor. Horários ficam em UTC, atualizações usam controle de concorrência e migrations atualizam o banco sem apagar os dados da versão anterior.",
+        "Testes de integração usam PostgreSQL real e verificam isolamento, permissões, concorrência, horários, paginação e atualização do esquema. Playwright percorre a interface, a confirmação de e-mail, a recuperação de senha, a renovação de sessão e a persistência após reiniciar os containers.",
+        "Na pasta projects/neotasks-dotnet, execute docker compose up --build e abra localhost:8080. Crie sua organização e use localhost:8025 para ler os e-mails da demonstração. O README traz as capturas e o roteiro de avaliação."
       ],
       "en": [
         "Bring together the team's projects, tasks and time entries while separating each organization's data.",
-        "I adapted the components from my React interface to a C#/.NET API. Organization signup, login, team management, tasks and time entries are included. Docker Compose starts the interface, API and PostgreSQL together.",
-        "Organization identity comes from the JWT. Owners manage projects and team members; members work on tasks. Updates use concurrency checks and timestamps are stored in UTC. Nginx serves the interface and forwards API requests.",
-        "HTTP tests use real PostgreSQL. GitHub Actions builds the Compose stack and runs the flow in Chromium with Playwright, covering signup, permissions, edits, time entries and persistence after container restarts.",
-        "This is a demonstration for local evaluation; the README explains how to run it. Password recovery, token renewal, auditing, pagination for the UI contract and migrations are still missing."
+        "I adapted my React interface to a C#/.NET API and PostgreSQL. Signup, team management, tasks, time entries, email confirmation, password recovery and auditing are included. Compose also provides an email inbox to test the workflows.",
+        "Owners manage projects and team members; members work on tasks. Authentication uses JWT and a rotating refresh token in an HttpOnly cookie. Search and pagination run on the server. Timestamps use UTC, updates check concurrency, and migrations upgrade the database while preserving data from the previous release.",
+        "Integration tests use real PostgreSQL and cover isolation, permissions, concurrency, time calculations, pagination and schema upgrades. Playwright exercises the interface, email confirmation, password recovery, session renewal and persistence after container restarts.",
+        "In projects/neotasks-dotnet, run docker compose up --build and open localhost:8080. Create an organization and use localhost:8025 to read demo emails. The README includes screenshots and a review walkthrough."
       ]
     }
   },
@@ -253,27 +253,27 @@ const projects = [
       ".NET 10",
       "EF Core",
       "SQLite",
-      "Vue / Nuxt",
+      "Vue 3 / Nuxt 4",
       "Docker Compose",
       "Playwright"
     ],
     "code": "https://github.com/LucianoNeo/creche_cad_backend_csharp",
-    "pt": "Cadastro de alunos, turmas, professores e documentos. API C#/.NET, interface Vue/Nuxt e execução com Docker Compose. Revisei o login, as consultas e o backup, e documentei a aplicação com capturas reais.",
-    "en": "Student, class, teacher and document management. C#/.NET API, Vue/Nuxt interface and Docker Compose setup. I revised authentication, queries and backups, and documented the application with real screenshots.",
+    "pt": "Gestão de alunos, turmas, professores e documentos. API .NET, interface Vue 3/Nuxt 4, contas da equipe, permissões, auditoria e backup. O Compose entrega a aplicação com dados fictícios para avaliação.",
+    "en": "Student, class, teacher and document management. .NET API, Vue 3/Nuxt 4 interface, staff accounts, permissions, audit history and backups. Compose starts the application with fictional review data.",
     "study": {
       "pt": [
-        "Manter os cadastros de uma escola organizados, com responsáveis, contatos e documentos vinculados a alunos e professores.",
-        "Desenvolvi o cadastro com C# e Vue/Nuxt. Nesta revisão, atualizei a API para .NET 10, preservei o front original e preparei os containers, os dados fictícios e o roteiro para avaliação.",
-        "Substituí o login no JavaScript por sessão com cookie HttpOnly e proteção CSRF. A listagem de alunos busca o nome da turma em uma consulta. O SQLite mantém os cadastros e os documentos no mesmo backup; usei sua API de snapshot para não copiar um arquivo em uso.",
-        "O GitHub Actions compila os containers e executa sete testes com Playwright. Eles verificam autenticação, validações, CRUD, bloqueio de exclusão de turma ocupada, uploads, backup, edição pelo navegador e navegação em desktop e celular. As capturas do README vêm dessa execução.",
-        "A versão de avaliação usa uma conta administrativa. Ainda faltam usuários por funcionário, auditoria e paginação no servidor. O front está em Vue/Nuxt 2; sua migração está pendente."
+        "Organizar a rotina de uma secretaria escolar, com responsáveis, contatos e documentos vinculados a alunos e professores.",
+        "Desenvolvi o cadastro com C# e Vue. Atualizei a API para .NET 10 e migrei a interface para Vue 3/Nuxt 4. Completei as contas da equipe, os três perfis de acesso, a recuperação administrada pela secretaria e o histórico de alterações.",
+        "O servidor controla permissões e sessões com cookie HttpOnly e CSRF. Alterações de senha ou acesso invalidam sessões anteriores. A busca é paginada no banco; o SQLite mantém cadastros e documentos no mesmo snapshot de backup. As migrations preservam a evolução do esquema.",
+        "Nove testes no GitHub Actions verificam API e navegador: cadastros, vínculos, documentos, backup, perfis, recuperação, auditoria, busca e paginação. O README mostra capturas reais, incluindo a interface no celular.",
+        "Clone o repositório, copie .env.example para .env e execute docker compose up --build --detach --wait. Abra localhost:8082; as credenciais e um roteiro curto estão no README."
       ],
       "en": [
-        "Keep school records organized, with guardians, contact details and documents linked to students and teachers.",
-        "I developed the records workflow with C# and Vue/Nuxt. In this revision, I updated the API to .NET 10, kept the original frontend and prepared containers, fictional data and an evaluation walkthrough.",
-        "I replaced browser-only login with an HttpOnly session cookie and CSRF protection. The student list retrieves class names in one query. SQLite keeps records and documents in the same backup; I used its snapshot API instead of copying an active database file.",
-        "GitHub Actions builds the containers and runs seven Playwright tests covering authentication, validation, CRUD, occupied class deletion, uploads, backups, browser edits and desktop/mobile navigation. The README screenshots come from that run.",
-        "The review version has one administrative account. Staff accounts, auditing and server-side pagination are pending. The frontend uses Vue/Nuxt 2 and still needs migration."
+        "Organize school administration, with guardians, contact details and documents linked to students and teachers.",
+        "I built the records workflow with C# and Vue, updated the API to .NET 10 and migrated the interface to Vue 3/Nuxt 4. Staff accounts, three permission levels, administrator-managed recovery and audit history are included.",
+        "The server enforces permissions and HttpOnly sessions with CSRF. Password or access changes invalidate previous sessions. Search is paginated in the database; SQLite keeps records and documents in the same backup snapshot. Versioned migrations preserve schema evolution.",
+        "Nine GitHub Actions tests cover the API and browser: records, relationships, documents, backups, roles, recovery, auditing, search and pagination. The README includes real screenshots and the mobile interface.",
+        "Clone the repository, copy .env.example to .env and run docker compose up --build --detach --wait. Open localhost:8082; the README includes credentials and a short review walkthrough."
       ]
     }
   },
