@@ -4,13 +4,20 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Data.Sqlite;
+using Npgsql;
 
-public sealed class ApiTests : IDisposable
+public sealed partial class ApiTests : IDisposable
 {
-    private readonly string file = Path.Combine(Path.GetTempPath(), $"neotasks-{Guid.NewGuid()}.db");
+    private readonly string database = "neotasks_test_" + Guid.NewGuid().ToString("N");
+    private readonly string adminConnection = Environment.GetEnvironmentVariable("NEOTASKS_TEST_DATABASE") ?? "Host=localhost;Database=postgres;Username=postgres;Password=postgres";
     private readonly WebApplicationFactory<Program> factory;
-    public ApiTests() => factory = new WebApplicationFactory<Program>().WithWebHostBuilder(b => b.UseEnvironment("Development").UseSetting("ConnectionStrings:Database", $"Data Source={file}"));
+    public ApiTests()
+    {
+        using var connection = new NpgsqlConnection(adminConnection); connection.Open();
+        using var create = new NpgsqlCommand($"CREATE DATABASE \"{database}\"", connection); create.ExecuteNonQuery();
+        var settings = new NpgsqlConnectionStringBuilder(adminConnection) { Database = database };
+        factory = new WebApplicationFactory<Program>().WithWebHostBuilder(b => b.UseEnvironment("Development").UseSetting("ConnectionStrings:Database", settings.ConnectionString));
+    }
     private async Task<HttpClient> Register(string email)
     {
         var c = factory.CreateClient();
@@ -77,5 +84,10 @@ public sealed class ApiTests : IDisposable
         Assert.Equal(HttpStatusCode.BadRequest, (await c.PostAsJsonAsync("/auth/register", new { organization = "Test" })).StatusCode);
         Assert.Equal(HttpStatusCode.Unauthorized, (await c.PostAsJsonAsync("/auth/login", new { })).StatusCode);
     }
-    public void Dispose() { factory.Dispose(); SqliteConnection.ClearAllPools(); File.Delete(file); }
+    public void Dispose()
+    {
+        factory.Dispose();
+        using var connection = new NpgsqlConnection(adminConnection); connection.Open();
+        using var drop = new NpgsqlCommand($"DROP DATABASE \"{database}\" WITH (FORCE)", connection); drop.ExecuteNonQuery();
+    }
 }

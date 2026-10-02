@@ -1,0 +1,91 @@
+import { AiOutlineDashboard, AiFillProject } from 'react-icons/ai'
+import { FaTasks, FaUsers } from 'react-icons/fa'
+import { BsCardList } from 'react-icons/bs'
+import { BiTask } from 'react-icons/bi'
+import { BsGithub } from 'react-icons/bs'
+
+interface Iprops {
+    open: boolean,
+    setClose: Function,
+    close: boolean,
+    setPage: Function,
+}
+
+function Menu({ open, setPage, setClose, close }: Iprops) {
+
+    return (
+        <nav className={`flex flex-col w-52 h-80 font-bold bg-orange-500 rounded-sm px-1  absolute transition-all z-50 overflow-y-hidden
+        ${open ? 'left-0' : 'left-[-170px]'}`}>
+            <ul className='flex flex-col gap-4 py-4 overflow-hidden p-1'>
+                <li
+                    onClick={() => {
+                        setPage('dashboard')
+                        setClose(!close)
+                    }}
+                    className='flex gap-4 hover:text-gray-900 text-justify justify-end cursor-pointer'>
+                    <span>DASHBOARD</span>
+                    <AiOutlineDashboard size={26} />
+
+                </li>
+                <li
+                    onClick={() => {
+                        setPage('projects')
+                        setClose(!close)
+                    }}
+                    className='flex gap-4 hover:text-gray-900 text-right justify-end cursor-pointer'>
+                    <span>PROJETOS</span>
+                    <AiFillProject size={26} />
+
+                </li>
+                <li
+                    onClick={() => {
+                        setPage('tasks')
+                        setClose(!close)
+                    }}
+                    className='flex gap-4 hover:text-gray-900 text-right justify-end cursor-pointer'>
+                    <span>TAREFAS</span>
+                    <BiTask size={26} />
+
+                </li>
+                <li
+                    onClick={() => {
+                        setPage('collaborators')
+                        setClose(!close)
+                    }}
+                    className='flex gap-4 hover:text-gray-900 text-right justify-end cursor-pointer'>
+                    <span>COLABORADORES</span>
+                    <FaUsers size={26} />
+
+                </li>
+                <li
+                    onClick={() => {
+                        setPage('list')
+                        setClose(!close)
+                    }}
+                    className='flex gap-4 hover:text-gray-900 text-right justify-end cursor-pointer'>
+                    <span>RELATÓRIO</span>
+                    <BsCardList size={26} />
+
+                </li>
+
+                <li className='flex gap-4 hover:text-gray-900 text-left justify-end cursor-pointer text-xs mt-4 flex-col'>
+                    <a href="https://github.com/LucianoNeo" target='_blank' rel='noopener noreferrer'>
+                        <div className='flex justify-between'>
+                            <div className='flex flex-col'>
+                                <span>Desenvolvido por LucianoNeo</span>
+                            </div>
+                            <BsGithub size={26} />
+                        </div>
+                    </a>
+                    <p className='text-center mt-2'>React + .NET </p>
+
+
+
+                </li>
+
+            </ul>
+        </nav>
+    )
+}
+
+export default Menu

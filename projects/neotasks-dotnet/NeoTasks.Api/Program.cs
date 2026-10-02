@@ -10,7 +10,7 @@ using NeoTasks;
 var builder = WebApplication.CreateBuilder(args);
 var signingKey = builder.Configuration["Jwt:Key"] ?? (builder.Environment.IsDevelopment() ? "local-demo-only-neotasks-key-32-characters" : throw new InvalidOperationException("Set Jwt__Key (32+ characters)."));
 if (Encoding.UTF8.GetByteCount(signingKey) < 32) throw new InvalidOperationException("Jwt__Key must contain at least 32 bytes.");
-builder.Services.AddDbContext<TasksDb>(o => o.UseSqlite(builder.Configuration.GetConnectionString("Database") ?? "Data Source=neotasks.db"));
+builder.Services.AddDbContext<TasksDb>(o => o.UseNpgsql(builder.Configuration.GetConnectionString("Database") ?? "Host=localhost;Database=neotasks;Username=neotasks;Password=neotasks-local-only"));
 builder.Services.AddScoped<PasswordHasher<User>>();
 builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
@@ -30,7 +30,7 @@ var app = builder.Build();
 app.UseExceptionHandler();
 app.UseAuthentication();
 app.UseAuthorization();
-using (var scope = app.Services.CreateScope()) scope.ServiceProvider.GetRequiredService<TasksDb>().Database.EnsureCreated();
+using (var scope = app.Services.CreateScope()) await scope.ServiceProvider.GetRequiredService<TasksDb>().Database.EnsureCreatedAsync();
 if (app.Environment.IsDevelopment()) app.MapOpenApi();
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 
@@ -41,18 +41,20 @@ static Guid Org(ClaimsPrincipal u) => Guid.Parse(u.FindFirstValue("org")!);
 static Guid Actor(ClaimsPrincipal u) => Guid.Parse(u.FindFirstValue("sub")!);
 static bool ValidCredentials(string? email, string? password) => !string.IsNullOrWhiteSpace(email) && email.Length <= 254 && email.Contains('@') && password is { Length: >= 12 and <= 128 };
 
-app.MapPost("/auth/register", async (RegisterRequest r, TasksDb db, PasswordHasher<User> hasher) =>
+async Task<IResult> RegisterAccount(RegisterRequest r, TasksDb db, PasswordHasher<User> hasher)
 {
-    if (string.IsNullOrWhiteSpace(r.Organization) || r.Organization.Length > 120 || !ValidCredentials(r.Email, r.Password)) return Results.BadRequest(new { error = "Organization and email required; password must have 12–128 characters." });
+    if (string.IsNullOrWhiteSpace(r.Organization) || r.Organization.Length > 120 || r.Name?.Length > 120 || !ValidCredentials(r.Email, r.Password)) return Results.BadRequest(new { error = "Informe a organização e um e-mail válido. A senha deve ter entre 12 e 128 caracteres." });
     var email = r.Email.Trim().ToLowerInvariant();
     if (await db.Users.AnyAsync(x => x.Email == email)) return Results.Conflict(new { error = "Email already registered." });
     var org = new Organization { Name = r.Organization.Trim() };
-    var user = new User { OrganizationId = org.Id, Email = email, Role = "Owner" };
+    var user = new User { OrganizationId = org.Id, Email = email, Name = string.IsNullOrWhiteSpace(r.Name) ? email : r.Name.Trim(), Role = "Owner" };
     user.PasswordHash = hasher.HashPassword(user, r.Password);
     db.Organizations.Add(org); db.Users.Add(user);
     try { await db.SaveChangesAsync(); } catch (DbUpdateException) { return Results.Conflict(new { error = "Registration conflict." }); }
-    return Results.Created("/auth/login", new { token = Token(user), organizationId = org.Id });
-});
+    return Results.Created("/auth/login", new { token = Token(user), organizationId = org.Id, username = user.Name, role = user.Role });
+}
+app.MapPost("/auth/register", RegisterAccount);
+app.MapPost("/app-api/register", RegisterAccount);
 app.MapPost("/auth/login", async (LoginRequest r, TasksDb db, PasswordHasher<User> hasher) =>
 {
     if (string.IsNullOrWhiteSpace(r.Email) || string.IsNullOrEmpty(r.Password) || r.Password.Length > 128) return Results.Unauthorized();
@@ -64,11 +66,12 @@ var api = app.MapGroup("/api").RequireAuthorization();
 api.MapPost("/members", async (MemberRequest r, ClaimsPrincipal actor, TasksDb db, PasswordHasher<User> hasher) =>
 {
     if (!ValidCredentials(r.Email, r.Password)) return Results.BadRequest();
-    var user = new User { OrganizationId = Org(actor), Email = r.Email.Trim().ToLowerInvariant() };
+    if (r.Name?.Length > 120) return Results.BadRequest();
+    var user = new User { OrganizationId = Org(actor), Email = r.Email.Trim().ToLowerInvariant(), Name = string.IsNullOrWhiteSpace(r.Name) ? r.Email.Trim() : r.Name.Trim() };
     user.PasswordHash = hasher.HashPassword(user, r.Password);
     db.Users.Add(user);
     try { await db.SaveChangesAsync(); } catch (DbUpdateException) { return Results.Conflict(); }
-    return Results.Created($"/api/members/{user.Id}", new { user.Id, user.Email, user.Role });
+    return Results.Created($"/api/members/{user.Id}", new { user.Id, user.Name, user.Email, user.Role });
 }).RequireAuthorization(p => p.RequireRole("Owner"));
 api.MapGet("/projects", async (int? page, ClaimsPrincipal actor, TasksDb db) =>
 {
@@ -112,5 +115,6 @@ api.MapPost("/tasks/{id:guid}/time", async (Guid id, TimeRequest r, ClaimsPrinci
     var entry = new TimeEntry { OrganizationId = org, TaskId = id, UserId = Actor(actor), Seconds = r.Seconds };
     db.TimeEntries.Add(entry); await db.SaveChangesAsync(); return Results.Created($"/api/time/{entry.Id}", entry);
 });
+app.MapFrontendEndpoints(signingKey);
 app.Run();
 public partial class Program { }

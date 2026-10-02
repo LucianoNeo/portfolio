@@ -7,6 +7,7 @@ COPY neotasks-dotnet/NeoTasks.Api/ neotasks-dotnet/NeoTasks.Api/
 RUN dotnet publish neotasks-dotnet/NeoTasks.Api -c Release -o /out --no-restore
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
 RUN mkdir /data && chown app:app /data
 COPY --from=build /out .
 USER app

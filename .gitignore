@@ -6,5 +6,8 @@
 **/*.db-wal
 .env
 node_modules/
+**/frontend/dist/
+**/playwright-report/
+**/test-results/
 **/__pycache__/
 *.tar.gz

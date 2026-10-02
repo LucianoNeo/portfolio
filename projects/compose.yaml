@@ -6,8 +6,22 @@ services:
     ports: ["127.0.0.1:5081:8080"]
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__Database: Data Source=/data/neotasks.db
-    volumes: ["neotasks-data:/data"]
+      ConnectionStrings__Database: Host=neotasks-db;Database=neotasks;Username=neotasks;Password=neotasks-local-only
+    depends_on:
+      neotasks-db:
+        condition: service_healthy
+  neotasks-db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: neotasks
+      POSTGRES_USER: neotasks
+      POSTGRES_PASSWORD: neotasks-local-only
+    volumes: ["neotasks-postgres:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U neotasks -d neotasks"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
   raids:
     build:
       context: .
@@ -27,6 +41,6 @@ services:
       ConnectionStrings__Database: Data Source=/data/inbox.db;Default Timeout=30
     volumes: ["inbox-data:/data"]
 volumes:
-  neotasks-data:
+  neotasks-postgres:
   raids-data:
   inbox-data:
