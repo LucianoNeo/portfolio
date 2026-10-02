@@ -1571,3 +1571,10 @@ body:has(dialog[open]) {
     font-size: 36px;
   }
 }
+
+.career-facts { display: grid; gap: 16px; margin: 28px 0; }
+.career-facts article { border-left: 2px solid #64d5ed; padding: 4px 0 4px 18px; }
+.career-facts h3 { font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: #64d5ed; margin: 0 0 10px; }
+.career-facts strong { color: #eef6ff; font-size: 1.05rem; }
+.career-facts p { margin: 8px 0 4px; }
+.career-facts small { color: #a6b7d3; }

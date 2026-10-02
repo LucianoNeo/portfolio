@@ -38,10 +38,10 @@ The GitHub Actions workflow validates website JavaScript and restores, builds an
 - New .NET labs are labelled as demonstrations and have no public API deployment.
 - Existing .NET 6 studies remain accessible as earlier work.
 - Redis Rate Limiting integrates a third-party library; it does not claim authorship of that library.
-- Professional roles, dates and metrics must be confirmed by Luciano before being added. The printable summary links to LinkedIn for employment history.
+- Education and the IngaCode development scope are sourced from the public LinkedIn profile and the owner’s GitHub profile README. Exact employment titles, dates and other employers remain unverified and are omitted. See `docs/profile-sources.md`.
 - The NeoTasks React demo still uses its original Fastify back end.
 - Game/mod assets retain their project origins and credits. Project screenshots are from their respective repositories; the three lab images are architecture diagrams.
 
 ## Português
 
-Portfólio PT/EN focado em back-end C#/.NET, com visual inspirado em RPG eletrônico. Os novos projetos estão em `projects/`, possuem testes e documentação e podem ser extraídos para repositórios próprios. O site é estático; as APIs precisam ser executadas separadamente. O histórico profissional aguarda confirmação para uma seção com cargos e períodos.
+Portfólio PT/EN focado em back-end C#/.NET, com visual inspirado em RPG eletrônico. Os novos projetos estão em `projects/`, possuem testes e documentação e podem ser extraídos para repositórios próprios. O site é estático; as APIs precisam ser executadas separadamente. A formação e a atuação na IngaCode aparecem no site e no resumo profissional. Cargos, períodos e demais empresas dependem do perfil completo; fontes em `docs/profile-sources.md`.

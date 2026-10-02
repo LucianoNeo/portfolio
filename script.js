@@ -42,6 +42,11 @@ const translations = {
       "Meu foco atual é C# e .NET, APIs REST e integração de dados. A trajetória em desenvolvimento full stack, suporte técnico e DevOps amplia minha visão sobre o ciclo de uma aplicação.",
     aboutText2:
       "Também construo com Node.js, Python, React, Next.js, TypeScript e React Native. Docker, Kubernetes e AWS fazem parte dos meus estudos e da minha prática em infraestrutura.",
+    experienceHeading: "Experiência",
+    experienceScope: "Desenvolvimento de aplicações web com Vue.js, Nuxt, C# e .NET.",
+    educationHeading: "Formação",
+    educationCourse: "Redes de Computadores",
+    educationSchool: "FAE Centro Universitário · São José dos Pinhais",
     linkedinProfile: "Experiência e formação no LinkedIn",
     loadout: "TECNOLOGIAS & PRÁTICA",
     apisData: "APIs & dados",
@@ -121,6 +126,11 @@ const translations = {
       "My current focus is C# and .NET, REST APIs and data integration. My background in full stack development, technical support and DevOps broadens my understanding of the application lifecycle.",
     aboutText2:
       "I also build with Node.js, Python, React, Next.js, TypeScript and React Native. Docker, Kubernetes and AWS are part of my infrastructure studies and practice.",
+    experienceHeading: "Experience",
+    experienceScope: "Web application development with Vue.js, Nuxt, C# and .NET.",
+    educationHeading: "Education",
+    educationCourse: "Computer Networks",
+    educationSchool: "FAE Centro Universitário · São José dos Pinhais",
     linkedinProfile: "Experience and education on LinkedIn",
     loadout: "TECHNOLOGIES & PRACTICE",
     apisData: "APIs & data",
