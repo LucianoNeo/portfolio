@@ -4,6 +4,9 @@ Multilingual (Portuguese / English) software engineering portfolio with an elect
 
 ## Website
 
+Published portfolio: [lucianoneo.github.io/portfolio](https://lucianoneo.github.io/portfolio/).
+The `pages.yml` workflow publishes only the static website files on changes to `main`.
+
 Plain HTML, CSS and JavaScript; no build dependency or framework. Serve the site directory with any static server. In this source checkout it is `dist/`; in the GitHub `portfolio` repository the static files are at the root for GitHub Pages compatibility.
 
 ```sh
