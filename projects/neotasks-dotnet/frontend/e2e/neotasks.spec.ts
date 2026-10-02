@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import { test, expect, Page } from '@playwright/test';
 const password = 'RecruiterPassword123!';
 async function menu(page: Page, name: string) {
@@ -33,6 +34,7 @@ test('recruiter can register, manage the team and track work through the existin
   await page.getByPlaceholder('Nome do Projeto').filter({ visible: true }).fill('API de pedidos');
   await page.getByRole('button', { name: 'CRIAR', exact: true }).filter({ visible: true }).click();
   await expect(page.getByText('API de pedidos', { exact: true }).filter({ visible: true })).toBeVisible();
+  fs.mkdirSync('captures',{recursive:true});await page.screenshot({path:'captures/projects.png',fullPage:true});
   await menu(page, 'TAREFAS');
   await page.getByRole('button', { name: 'Nova tarefa' }).click();
   const taskForm = page.locator('form').filter({ has: page.getByRole('heading', { name: 'Criar Tarefa:' }) });
@@ -68,12 +70,16 @@ test('recruiter can register, manage the team and track work through the existin
   await menu(page, 'RELATÓRIO');
   await expect(page.getByRole('row').filter({ hasText: 'Corrigir total do pedido' })).toContainText('00:25');
   await expect(page.getByRole('row').filter({ hasText: 'Investigar pagamento' })).toContainText('00:15');
+  await page.screenshot({path:'captures/report.png',fullPage:true});
   await page.getByRole('button', { name: 'Filtrar relatório' }).click();
   await page.getByPlaceholder('Digite sua busca').fill('Investigar');
   await expect(page.getByRole('row').filter({ hasText: 'Investigar pagamento' })).toContainText('00:15');
   await expect(page.getByRole('row').filter({ hasText: 'Corrigir total do pedido' })).not.toBeVisible();
   await page.reload();
   await expect(page.getByText('Olá, Recrutador!')).toBeVisible();
+  await page.screenshot({path:'captures/overview.png',fullPage:true});
+  await menu(page,'AUDITORIA');await page.screenshot({path:'captures/audit.png',fullPage:true});
+  await menu(page,'MINHA CONTA');await expect(page.getByText(ownerEmail,{exact:true})).toBeVisible();
   await page.getByRole('button', { name: 'Sair', exact: true }).click();
   await page.getByLabel('E-mail', { exact: true }).fill(memberEmail);
   await page.getByLabel('Senha', { exact: true }).fill(password);
