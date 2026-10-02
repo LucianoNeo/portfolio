@@ -51,6 +51,26 @@ test('recruiter can register, manage the team and track work through the existin
   await expect(page.getByRole('button', { name: 'Finalizar', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Finalizar', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Finalizar', exact: true })).not.toBeVisible();
+  const token = await page.evaluate(() => sessionStorage.getItem('neotasks:token'));
+  const headers = { Authorization: 'Bearer ' + token };
+  const tasks = await (await request.get('/app-api/tasks', { headers })).json();
+  const finishedAt = new Date();
+  expect((await request.post('/app-api/timetrackers', { headers, data: {
+    taskId: tasks[0].id, startDate: new Date(finishedAt.getTime() - 25 * 60000).toISOString(), endDate: finishedAt.toISOString(),
+  } })).status()).toBe(201);
+  const extra = await request.post('/app-api/tasks', { headers, data: {
+    name: 'Investigar pagamento', projectId: tasks[0].project.id,
+    startDate: new Date(finishedAt.getTime() - 15 * 60000).toISOString(), endDate: finishedAt.toISOString(),
+  } });
+  expect(extra.status()).toBe(201);
+  await page.reload();
+  await menu(page, 'RELATÓRIO');
+  await expect(page.getByRole('row').filter({ hasText: 'Corrigir total do pedido' })).toContainText('00:25');
+  await expect(page.getByRole('row').filter({ hasText: 'Investigar pagamento' })).toContainText('00:15');
+  await page.getByRole('button', { name: 'Filtrar relatório' }).click();
+  await page.getByPlaceholder('Digite sua busca').fill('Investigar');
+  await expect(page.getByRole('row').filter({ hasText: 'Investigar pagamento' })).toContainText('00:15');
+  await expect(page.getByRole('row').filter({ hasText: 'Corrigir total do pedido' })).not.toBeVisible();
   await page.reload();
   await expect(page.getByText('Olá, Recrutador!')).toBeVisible();
   await page.getByRole('button', { name: 'Sair', exact: true }).click();

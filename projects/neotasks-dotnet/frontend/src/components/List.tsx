@@ -20,6 +20,7 @@ function List() {
                 </div>
                 <div className={`${openFilter ? 'w-full' : 'w-14'} h-14 bg-slate-900 rounded-full items-center justify-between  transition-all text-xs px-2 overflow-hidden flex mt-4`}>
                     <button
+                        aria-label="Filtrar relatório"
                         onClick={() => setOpenFilter(!openFilter)}
                     >
                         <div className="translate-x-2">
