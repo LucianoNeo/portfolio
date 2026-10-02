@@ -164,25 +164,7 @@
       <p data-i18n="careerDesc4">Atendi usuários e trabalhei com servidores, redes e manutenção de computadores.</p>
     </article></div>
 </section>
-        <section class="evidence-section" aria-labelledby="evidence-title">
-          <h2 id="evidence-title" data-i18n="evidenceTitle">O que os exemplos testam</h2>
-          <div class="evidence-grid">
-            <a href="#case-neotasks-dotnet"
-              ><span>01 / AUTH</span>
-              <h3 data-i18n="evidence1">Autorização & dados</h3>
-              <p data-i18n="evidence1text">Uma organização não pode acessar os projetos de outra.</p></a
-            ><a href="#case-raid-booking"
-              ><span>02 / CONCURRENCY</span>
-              <h3 data-i18n="evidence2">Concorrência & idempotência</h3>
-              <p data-i18n="evidence2text">Vinte jogadores disputam uma vaga; só uma reserva é criada.</p></a
-            ><a href="#case-webhook-inbox"
-              ><span>03 / INTEGRATIONS</span>
-              <h3 data-i18n="evidence3">Integrações & recuperação</h3>
-              <p data-i18n="evidence3text">Um evento repetido gera um único registro de pontos.</p></a
-            >
-          </div>
-        </section>
-        <section id="projects" class="projects-section">
+<section id="projects" class="projects-section">
           <div class="section-heading">
             <div>
               <p class="eyebrow">
@@ -194,7 +176,7 @@
                 ><span class="heading-dot">.</span>
               </h2>
             </div>
-            <p data-i18n="projectsIntro">Aplicações que desenvolvi e exemplos em .NET para testar regras de acesso, concorrência e processamento de eventos.</p>
+            <p data-i18n="projectsIntro">Aplicações que desenvolvi, com código disponível e interfaces para conhecer o funcionamento.</p>
           </div>
           <div class="project-toolbar">
             <div class="filters" role="group" aria-label="Filtrar projetos">
@@ -232,81 +214,11 @@
             <span id="project-count" class="project-count"></span>
           </div>
           <div id="project-grid" class="project-grid">
-            <article class="project-card">
-              <div class="project-image">
-                <img
-                  src="assets/neotasks-dotnet.svg"
-                  alt="NeoTasks .NET"
-                  width="960"
-                  height="540"
-                />
-              </div>
-              <div class="project-body">
-                <span class="project-number"
-                  >Laboratório .NET · execução local</span
-                >
-                <h3>NeoTasks .NET</h3>
-                <p>
-                  Organizações, projetos, tarefas e horas com JWT e isolamento
-                  de dados.
-                </p>
-                <a
-                  class="text-link"
-                  href="https://github.com/LucianoNeo/portfolio/tree/main/projects/neotasks-dotnet"
-                  >Código e documentação ↗</a
-                >
-              </div>
-            </article>
-            <article class="project-card">
-              <div class="project-image">
-                <img
-                  src="assets/raid-booking.svg"
-                  alt="Raid Booking API"
-                  width="960"
-                  height="540"
-                />
-              </div>
-              <div class="project-body">
-                <span class="project-number"
-                  >Laboratório .NET · execução local</span
-                >
-                <h3>Raid Booking API</h3>
-                <p>
-                  Reservas com capacidade limitada, transações e idempotência.
-                </p>
-                <a
-                  class="text-link"
-                  href="https://github.com/LucianoNeo/portfolio/tree/main/projects/raid-booking"
-                  >Código e documentação ↗</a
-                >
-              </div>
-            </article>
-            <article class="project-card">
-              <div class="project-image">
-                <img
-                  src="assets/webhook-inbox.svg"
-                  alt="Webhook Inbox"
-                  width="960"
-                  height="540"
-                />
-              </div>
-              <div class="project-body">
-                <span class="project-number"
-                  >Laboratório .NET · execução local</span
-                >
-                <h3>Webhook Inbox</h3>
-                <p>
-                  Eventos assinados, deduplicação e processamento persistente.
-                </p>
-                <a
-                  class="text-link"
-                  href="https://github.com/LucianoNeo/portfolio/tree/main/projects/webhook-inbox"
-                  >Código e documentação ↗</a
-                >
-              </div>
-            </article>
+<article class="project-card"><div class="project-image"><img src="assets/neotasks.png" alt="NeoTasks · React + .NET" width="960" height="540" loading="lazy" /></div><div class="project-body"><span class="project-number">Aplicação completa · Docker Compose</span><h3>NeoTasks · React + .NET</h3><p>Reaproveitei minha interface React e conectei a uma API .NET com PostgreSQL. Projetos, tarefas, equipe e horas em uma aplicação que você pode executar com Docker Compose.</p><a class="text-link" href="https://github.com/LucianoNeo/portfolio/tree/main/projects/neotasks-dotnet" target="_blank" rel="noopener noreferrer">Código e documentação ↗</a></div></article>
+<article class="project-card"><div class="project-image"><img src="assets/neoscan.png" alt="NeoScan Raids" width="960" height="540" loading="lazy" /></div><div class="project-body"><span class="project-number">Aplicação web</span><h3>NeoScan Raids</h3><p>Plataforma web para encontrar raids, filtrar eventos e marcar partidas com outros jogadores.</p><a class="text-link" href="https://github.com/LucianoNeo/neoscan-raids" target="_blank" rel="noopener noreferrer">Código e documentação ↗</a></div></article>
+<article class="project-card"><div class="project-image"><img src="assets/sleep.png" alt="Pokémon Sleep Companion" width="960" height="540" loading="lazy" /></div><div class="project-body"><span class="project-number">Aplicação web</span><h3>Pokémon Sleep Companion</h3><p>Guia multilíngue de Pokémon, ingredientes, receitas e itens para consultas rápidas durante o jogo.</p><a class="text-link" href="https://github.com/LucianoNeo/pokemon-sleep-companion" target="_blank" rel="noopener noreferrer">Código e documentação ↗</a></div></article>
           </div>
-          <p class="lab-note" data-i18n="labNote">Os exemplos .NET rodam localmente. Cada README traz os comandos, os testes e o que ainda falta implementar.</p>
+          <p class="lab-note" data-i18n="runNote">O NeoTasks pode ser executado com Docker Compose. O README traz o comando e um roteiro de avaliação.</p>
           <p class="more-projects">
             <span data-i18n="moreProjects">Quer ver mais?</span>
             <a
@@ -408,9 +320,9 @@
           <div class="section-heading">
             <div>
               <p class="eyebrow" data-i18n="creativeEyebrow">SIDE QUESTS</p>
-              <h2 data-i18n="creativeTitle">Jogos & experimentos</h2>
+              <h2 data-i18n="creativeTitle">Desenvolvimento de jogos</h2>
             </div>
-            <p data-i18n="creativeIntro">Também faço jogos e mods. Aqui estão alguns projetos ligados ao meu interesse por Pokémon e RPGs.</p>
+            <p data-i18n="creativeIntro">No Pokémon GO 2D, trabalhei com exploração, captura, inventário e uma interface adaptada para desktop e celular.</p>
           </div>
           <div id="creative-grid" class="project-grid"></div>
         </section>
@@ -461,6 +373,6 @@
         </div>
       </footer>
     </div>
-    <script src="script.js?v=af89610573" defer></script>
+    <script src="script.js?v=b8e0d02ec8" defer></script>
   </body>
 </html>
