@@ -31,11 +31,8 @@ jobs:
       - name: Prepare versioned PostgreSQL schema
         run: |
           dotnet restore projects/neotasks-dotnet/NeoTasks.Api
-          if ! find projects/neotasks-dotnet/NeoTasks.Api -name '*CompleteTasks.cs' | grep -q .; then
-            dotnet tool install dotnet-ef --tool-path /tmp/ef --version 10.0.12
-            NEOTASKS_BASELINE=1 /tmp/ef/dotnet-ef migrations add InitialTasks --project projects/neotasks-dotnet/NeoTasks.Api
-            /tmp/ef/dotnet-ef migrations add CompleteTasks --project projects/neotasks-dotnet/NeoTasks.Api
-          fi
+          dotnet tool install dotnet-ef --tool-path /tmp/ef --version 10.0.12
+          /tmp/ef/dotnet-ef migrations has-pending-model-changes --project projects/neotasks-dotnet/NeoTasks.Api
           mkdir -p schema
           cp projects/neotasks-dotnet/NeoTasks.Api/Migrations/*.cs schema/
       - name: Test API boundaries and frontend contract

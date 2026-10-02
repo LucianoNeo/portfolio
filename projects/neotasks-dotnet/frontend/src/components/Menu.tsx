@@ -24,7 +24,7 @@ function Menu({ open, setPage, setClose, close }: Iprops) {
                 <li
                     onClick={() => {
                         setPage('dashboard')
-                        setClose(!close)
+                        setClose(false)
                     }}
                     className='flex gap-4 hover:text-gray-900 text-justify justify-end cursor-pointer'>
                     <span>DASHBOARD</span>
@@ -34,7 +34,7 @@ function Menu({ open, setPage, setClose, close }: Iprops) {
                 <li
                     onClick={() => {
                         setPage('projects')
-                        setClose(!close)
+                        setClose(false)
                     }}
                     className='flex gap-4 hover:text-gray-900 text-right justify-end cursor-pointer'>
                     <span>PROJETOS</span>
@@ -44,7 +44,7 @@ function Menu({ open, setPage, setClose, close }: Iprops) {
                 <li
                     onClick={() => {
                         setPage('tasks')
-                        setClose(!close)
+                        setClose(false)
                     }}
                     className='flex gap-4 hover:text-gray-900 text-right justify-end cursor-pointer'>
                     <span>TAREFAS</span>
@@ -54,7 +54,7 @@ function Menu({ open, setPage, setClose, close }: Iprops) {
                 <li
                     onClick={() => {
                         setPage('collaborators')
-                        setClose(!close)
+                        setClose(false)
                     }}
                     className='flex gap-4 hover:text-gray-900 text-right justify-end cursor-pointer'>
                     <span>COLABORADORES</span>
@@ -64,7 +64,7 @@ function Menu({ open, setPage, setClose, close }: Iprops) {
                 <li
                     onClick={() => {
                         setPage('list')
-                        setClose(!close)
+                        setClose(false)
                     }}
                     className='flex gap-4 hover:text-gray-900 text-right justify-end cursor-pointer'>
                     <span>RELATÓRIO</span>
@@ -72,8 +72,8 @@ function Menu({ open, setPage, setClose, close }: Iprops) {
 
                 </li>
 
-                <li onClick={()=>{setPage('account');setClose(!close);}} className="text-right cursor-pointer">MINHA CONTA</li>
-                {role==='Owner'&&<li onClick={()=>{setPage('audit');setClose(!close);}} className="text-right cursor-pointer">AUDITORIA</li>}
+                <li onClick={()=>{setPage('account');setClose(false);}} className="flex gap-4 justify-end cursor-pointer"><span>MINHA CONTA</span><FaUsers size={26}/></li>
+                {role==='Owner'&&<li onClick={()=>{setPage('audit');setClose(false);}} className="flex gap-4 justify-end cursor-pointer"><span>AUDITORIA</span><BsCardList size={26}/></li>}
                 <li className='flex gap-4 hover:text-gray-900 text-left justify-end cursor-pointer text-xs mt-4 flex-col'>
                     <a href="https://github.com/LucianoNeo" target='_blank' rel='noopener noreferrer'>
                         <div className='flex justify-between'>

@@ -5,6 +5,7 @@ async function menu(page: Page, name: string) {
   await page.getByRole('button', { name: 'Abrir menu' }).click();
   await page.locator('nav').getByText(name, { exact: true }).click();
   await expect(page.getByRole('heading', { name, exact: true })).toBeVisible();
+  await expect.poll(async()=>Math.round((await page.locator('nav').boundingBox())!.x)).toBe(-170);
 }
 test('recruiter can register, manage the team and track work through the existing UI', async ({ page, request }) => {
   const suffix = Date.now();
@@ -78,7 +79,7 @@ test('recruiter can register, manage the team and track work through the existin
   await page.reload();
   await expect(page.getByText('Olá, Recrutador!')).toBeVisible();
   await page.screenshot({path:'captures/overview.png',fullPage:true});
-  await menu(page,'AUDITORIA');await page.screenshot({path:'captures/audit.png',fullPage:true});
+  await menu(page,'AUDITORIA');await expect(page.getByRole('cell',{name:'WorkTask',exact:true}).first()).toBeVisible();await page.screenshot({path:'captures/audit.png',fullPage:true});
   await menu(page,'MINHA CONTA');await expect(page.getByText(ownerEmail,{exact:true})).toBeVisible();
   await page.getByRole('button', { name: 'Sair', exact: true }).click();
   await page.getByLabel('E-mail', { exact: true }).fill(memberEmail);

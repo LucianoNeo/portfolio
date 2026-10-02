@@ -2,7 +2,7 @@
 
 [![NeoTasks checks](https://github.com/LucianoNeo/portfolio/actions/workflows/neotasks-ci.yml/badge.svg)](https://github.com/LucianoNeo/portfolio/actions/workflows/neotasks-ci.yml)
 
-Juntei a interface React do meu desafio de tarefas com uma API em C#/.NET. O projeto permite criar uma organização, cadastrar colaboradores, organizar tarefas por projeto e registrar o tempo de trabalho. Mantive o visual e os componentes da interface original e adaptei o contrato para o novo backend.
+Juntei a interface React do meu desafio de tarefas com uma API em C#/.NET. O projeto permite criar uma organização, cadastrar colaboradores, organizar tarefas por projeto e registrar o tempo de trabalho. Mantive o visual e os componentes da interface original e adaptei o contrato para o novo backend. Incluí recuperação de senha por e-mail, confirmação de endereço, renovação de sessão, auditoria e busca paginada.
 
 ## Para avaliar o projeto
 
@@ -23,6 +23,9 @@ Um roteiro de cinco minutos:
 3. Crie uma tarefa e atribua um colaborador.
 4. Use Iniciar e Finalizar para registrar o tempo, ou informe um período já trabalhado.
 5. Confira o Dashboard e o Relatório. Saia e entre como colaborador para comparar as permissões.
+6. Abra **http://localhost:8025**: a caixa Mailpit recebe os e-mails desta instalação. Use a mensagem de confirmação para validar seu endereço.
+7. No login, escolha **Esqueci minha senha**, abra o e-mail na caixa e defina uma nova senha. O link expira em uma hora e só pode ser usado uma vez.
+8. Entre como Owner e consulte **Auditoria**. Use a busca e as páginas em Projetos e Tarefas.
 
 O Docker baixa e compila as imagens na primeira execução. A API aguarda a criação do banco e a interface aguarda a API ficar saudável. A porta da API fica apenas na rede interna; o Nginx encaminha as chamadas da interface.
 
@@ -44,8 +47,8 @@ Se a porta 8080 estiver ocupada, copie `.env.example` para `.env` e mude `NEOTAS
 | `frontend/` | React 18, TypeScript, Vite e Tailwind; interface original adaptada |
 | `NeoTasks.Api/` | ASP.NET Core .NET 10, EF Core e PostgreSQL |
 | `NeoTasks.Tests/` | Testes de integração com banco PostgreSQL real |
-| `compose.yaml` | API, PostgreSQL, Nginx e volume persistente |
-| `frontend/e2e/` | Playwright: cadastro, equipe, tarefas, horas, permissões e persistência |
+| `compose.yaml` | API, PostgreSQL, Nginx, Mailpit e volume persistente |
+| `frontend/e2e/` | Playwright: cadastro, equipe, tarefas, horas, permissões, e-mail, recuperação e persistência |
 
 ```mermaid
 flowchart LR
@@ -79,16 +82,34 @@ npm run test:e2e
 
 Esses comandos extras são opcionais para quem quiser estudar ou modificar o código. A avaliação pelo navegador exige apenas o Compose.
 
-## Origem e limites
+## Origem e regras da aplicação
 
 A interface veio de [ingacode-test-frontend](https://github.com/LucianoNeo/ingacode-test-frontend), commit `2083dfc646e7f3aee84caab673dee1c0bd902685`. O domínio foi inspirado no [backend original em Fastify](https://github.com/LucianoNeo/ingacode-test-backend). Nesta pasta, a interface usa exclusivamente a API .NET; não depende daqueles serviços externos.
 
-Este é um projeto de demonstração. Ainda faltam recuperação de senha, verificação de e-mail, renovação de token, rate limiting e auditoria. A sessão dura 30 minutos e pede novo login ao expirar. O contrato da interface carrega as coleções da organização sem paginação; para grande volume, eu paginaria esses endpoints. Apontamentos abertos não entram no total até serem finalizados; cada apontamento aceita até 24 horas. Lançamentos antigos feitos pela rota de segundos continuam no total por tarefa, mas sem uma data não podem aparecer nos totais de calendário.
+A instalação usa PostgreSQL 17 e migrations do EF Core, aplicadas na inicialização. A atualização reconhece o esquema das versões anteriores que usavam EnsureCreated e o adota como baseline sem apagar usuários, projetos ou tarefas. O teste de integração cobre essa atualização.
 
-O banco usa EnsureCreated na primeira execução. Uma implantação duradoura precisa de migrations, HTTPS e gestão de segredos. Bancos SQLite da antiga API e bancos do desafio Fastify não são importados automaticamente; esta aplicação inicia seu próprio banco PostgreSQL. Não copie um volume existente desses projetos para este Compose.
+A sessão usa JWT de 30 minutos e um refresh token de sete dias em cookie HttpOnly/SameSite. O navegador renova o acesso automaticamente; cada renovação consome o token anterior. O banco guarda apenas hashes dos tokens de acesso por link e de renovação. Uma redefinição de senha encerra as sessões anteriores. Login, cadastro, recuperação, confirmação e renovação têm limitação de tentativas.
+
+A confirmação de e-mail informa o estado da conta em **Minha conta**. Ela não impede a avaliação das telas antes de abrir a mensagem. A recuperação responde da mesma maneira para endereços existentes ou desconhecidos. Mailpit captura os e-mails no Compose e não os envia a caixas externas. Em uma hospedagem própria, configure `Mail__Host`, `Mail__Port`, `Mail__UseTls`, `Mail__Username`, `Mail__Password`, `Mail__From` e `PublicUrl` para seu servidor SMTP e endereço público.
+
+Projetos e tarefas aceitam `page` e `q`; tarefas também aceitam `filterBy` para nome, projeto ou colaborador. A API retorna até 20 registros por página e o total em `X-Total-Count`. A interface permite percorrer as páginas e pesquisar no servidor. Os seletores carregam nomes e IDs de projetos, independentemente da página visível. A auditoria é paginada e filtrada pela organização do usuário; somente Owner a consulta.
+
+Apontamentos abertos não entram no total até serem finalizados; cada apontamento aceita até 24 horas. Lançamentos feitos pela rota de segundos entram no total por tarefa, enquanto os totais de calendário usam períodos com início e fim. As tabelas têm chaves e vínculos por organização, além das validações de acesso da API.
+
+## Telas
+
+Capturas feitas na aplicação completa pelo Playwright do GitHub Actions, com dados fictícios.
+
+![Visão geral](docs/images/overview.png)
+
+![Projetos](docs/images/projects.png)
+
+![Relatório de horas](docs/images/report.png)
+
+![Auditoria](docs/images/audit.png)
 
 ## English
 
 A complete React + ASP.NET Core task and time tracking application. Clone this repository, open `projects/neotasks-dotnet`, run `docker compose up --build` and visit **http://localhost:8080**. Create an organization first; its first user becomes Owner. Owners manage projects and team members; members manage their organization's tasks and time entries. PostgreSQL data survives container restarts through a named volume.
 
-The frontend is adapted from my original React challenge and now talks to the .NET API through Nginx. GitHub Actions builds and runs the Compose stack and checks the browser flow with Playwright. This is an evaluation project, with the limitations documented above.
+The frontend is adapted from my original React challenge and now talks to the .NET API through Nginx. GitHub Actions builds and runs the Compose stack and checks the browser flow with Playwright. Account recovery, email confirmation, rotating sessions, audit history, server-side search/pagination and versioned EF migrations are included. Open **http://localhost:8025** to read the local demo emails. The test suite checks both fresh databases and upgrades from the previous schema.

@@ -26,6 +26,7 @@ function Home() {
   useEffect(()=>{if(!['projects','tasks','list'].includes(page))return;const url=page==='projects'?'/projects':'/tasks';sessionStorage.setItem('page:'+url,String(collectionPage));sessionStorage.setItem('q:'+url,collectionSearch);const timer=setTimeout(()=>{api.get(url).then(({data})=>url==='/projects'?setProjects(data):setTasks(data)).catch(ErrorToast);},250);return()=>clearTimeout(timer);},[page,collectionPage,collectionSearch]);
   const { setProjects, projects, setTasks, tasks, setIsLoading, setCollaborators, dayMinutes, setDayMinutes, monthMinutes, setMonthMinutes, ErrorToast, SuccessToast } = useMyContext()
   const { user, token, signOut } = useContext(AuthContext)
+  useEffect(()=>{if(page==='dashboard')api.get('/counts').then(({data})=>setCounts(data)).catch(ErrorToast);},[page,token]);
 
   useEffect(() => {
     let active = true;
