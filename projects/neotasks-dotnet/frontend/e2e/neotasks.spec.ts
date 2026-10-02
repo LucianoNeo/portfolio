@@ -45,6 +45,7 @@ test('recruiter can register, manage the team and track work through the existin
   await expect(page.getByText('Corrigir cálculo do pedido', { exact: true }).filter({ visible: true })).toBeVisible();
   await page.getByRole('button', { name: 'Editar tarefa', exact: true }).click();
   await page.getByPlaceholder('Nome da Tarefa').filter({ visible: true }).fill('Corrigir total do pedido');
+  await expect(page.getByPlaceholder('Nome da Tarefa').filter({ visible: true })).toHaveValue('Corrigir total do pedido');
   await page.getByRole('button', { name: 'CONFIRMAR', exact: true }).filter({ visible: true }).click();
   await expect(page.getByText('Corrigir total do pedido', { exact: true }).filter({ visible: true })).toBeVisible();
   await page.getByRole('button', { name: 'Iniciar', exact: true }).click();

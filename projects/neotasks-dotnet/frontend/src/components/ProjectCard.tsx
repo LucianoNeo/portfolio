@@ -46,7 +46,7 @@ function ProjectCard({ name, tasks, id }: Iprops) {
     return (
         <div className="flex flex-col flex-wrap mx-auto h-[60vh] gap-4">
             <DeleteProjectModal visible={deleteProjectVisible} close={closeModal} name={name} id={id} />
-            <EditProjectModal visible={editModalVisible} close={closeModal} name={name} id={id} />
+            {editModalVisible && <EditProjectModal visible={editModalVisible} close={closeModal} name={name} id={id} />}
             <DeleteTaskModal visible={deleteTaskVisible} close={closeModal} name={task.name} id={task.id} />
             <div className="bg-slate-800 w-[75vw] md:w-96 rounded-xl flex items-start overflow-hidden h-[60vh]">
                 <div className="flex  gap-4">

@@ -42,7 +42,7 @@ function TaskCard({ name, project, description, timetrackers, id, projectId, ver
     return (
         <div className="flex flex-col flex-wrap p-1 px-4 mx-auto h-[84vh] gap-1">
             <DeleteTaskModal visible={deleteTaskVisible} close={closeModal} name={name} id={id} />
-            <EditTaskModal version={version} visible={editTaskVisible} close={closeModal} name={name} id={id} description={description} projectId={projectId} />
+            {editTaskVisible && <EditTaskModal version={version} visible={editTaskVisible} close={closeModal} name={name} id={id} description={description} projectId={projectId} />}
             <CreateTimetrackerModal visible={createTTModalVisible} close={closeModal} id={id} />
 
             <div className="bg-slate-800 w-[75vw] md:w-96 rounded-xl flex p-4 justify-evenly items-center overflow-hidden relative">

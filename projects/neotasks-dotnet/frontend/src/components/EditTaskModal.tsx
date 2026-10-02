@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Resolver, useForm, Controller } from 'react-hook-form';
 import { getApiError, api } from '../services/Api';
 import { useMyContext } from '../contexts/MyContext';
@@ -65,7 +64,6 @@ export default function EditTaskModal({ visible, close, name, id, projectId, des
         }
     });
 
-    useEffect(() => { if (visible) reset({ name, id, projectId, description, version }); }, [visible, name, id, projectId, description, version, reset]);
 
     const { setProjects, projects, setTasks, setIsLoading, setDayMinutes, setMonthMinutes, SuccessToast, ErrorToast } = useMyContext()
 
