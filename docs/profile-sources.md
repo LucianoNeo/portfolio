@@ -14,3 +14,7 @@ Earlier public corroboration: [LinkedIn](https://br.linkedin.com/in/lucianoneo/e
 ## User update — 2026-10-02
 
 Luciano described multiple team releases from requirements analysis through deployment, production bug fixes in APIs, microservices and front ends, and one release developed and delivered independently with Vue 2 and .NET 8. This account supplies the updated IngaCode description. No delivery dates, project names or quantitative results were provided.
+
+## AI-assisted development — user update, 2026-10-02
+
+Luciano supplied a focus on AI-assisted development with Claude Code, Codex, Hermes and OpenClaw. The website and summary describe an area of practice, without claiming a formal qualification, certification or quantified productivity gain. No attribution of these tools to the existing sample projects is inferred.
