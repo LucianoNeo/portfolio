@@ -1,12 +1,12 @@
 # Professional profile sources
 
-Checked 2026-10-01. Only publicly verifiable details are included.
+Updated 2026-10-02 from the user-supplied CV-EN-1.pdf (two pages), read as text and visually verified. The original PDF is not committed or published.
 
-| Fact | Source |
-| --- | --- |
-| IngaCode appears under Experience | [LinkedIn public profile](https://br.linkedin.com/in/lucianoneo/en) |
-| Development scope: VueJS, Nuxt, C# and .NET | [Owner’s GitHub profile README](https://github.com/LucianoNeo/LucianoNeo/blob/main/README.md) |
-| FAE Centro Universitário, 2016–2018 | [LinkedIn public profile](https://br.linkedin.com/in/lucianoneo/en) |
-| Computer Networks, São José dos Pinhais, graduated 2018 | [Owner’s GitHub profile README](https://github.com/LucianoNeo/LucianoNeo/blob/main/README.md) |
+- Page 1: FAE São José dos Pinhais, Computer Networking Technology, completion December 2017; four training courses with providers, years and hours; English B2 on page 2.
+- Page 2: IngaCode, Full Stack Developer since February 2023; NeoTecHouse Info, Front-end/Mobile Developer 2022–2023; Neoscan.com.br, System Administrator since 2017; NeoTecHouse Info, Technical Support 2010–2022; Compmaster Informática, Technical Support 2006–2010.
+- Role descriptions summarize the CV without adding performance metrics or official seniority.
+- Parallel roles and the CV’s “since” periods are preserved. No new end dates are inferred.
+- December 2017 follows the supplied CV. Earlier public LinkedIn/GitHub sources indicated 2018; clarification was requested.
+- Home address, postal code and phone number are not copied to the public site. Existing business email and city remain.
 
-The guest LinkedIn view conceals official job titles, employment periods, other employers and the degree title. The degree title and development scope are supplemented by the owner’s own GitHub README. No official job title, employment period, or assertion of current employment is inferred. The IngaCode copy describes development scope rather than an official position.
+Earlier public corroboration: [LinkedIn](https://br.linkedin.com/in/lucianoneo/en), [owner’s GitHub profile README](https://github.com/LucianoNeo/LucianoNeo/blob/main/README.md).

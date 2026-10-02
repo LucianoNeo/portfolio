@@ -1578,3 +1578,12 @@ body:has(dialog[open]) {
 .career-facts strong { color: #eef6ff; font-size: 1.05rem; }
 .career-facts p { margin: 8px 0 4px; }
 .career-facts small { color: #a6b7d3; }
+
+.experience-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }
+.experience-card { background: #122440; border: 1px solid #2b4265; border-radius: 14px; padding: 28px; }
+.experience-primary { grid-column: 1 / -1; border-color: #64d5ed; }
+.experience-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; color: #64d5ed; font-size: .85rem; }
+.experience-card h3 { font-size: 1.2rem; margin: 18px 0 12px; color: #f0f6ff; }
+.experience-card p { color: #b9c7dd; line-height: 1.75; margin: 0; }
+.training-list { color: #b9c7dd; padding-left: 18px; line-height: 1.75; margin: 10px 0; }
+@media(max-width: 680px) { .experience-grid { grid-template-columns: 1fr; } .experience-card { padding: 22px; } }
