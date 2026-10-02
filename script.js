@@ -99,7 +99,7 @@ const translations = {
     product: "Aplicação web",
     creative: "Projeto criativo",
     runNote:
-      "O NeoTasks pode ser executado com Docker Compose. O README traz o comando e um roteiro de avaliação.",
+      "NeoTasks e CrecheCad podem ser executados com Docker Compose. Os READMEs trazem os comandos e roteiros de avaliação.",
   },
   en: {
     careerEyebrow: "PROFESSIONAL EXPERIENCE",
@@ -201,7 +201,7 @@ const translations = {
     product: "Web application",
     creative: "Creative project",
     runNote:
-      "NeoTasks runs with Docker Compose. Its README includes the command and an evaluation walkthrough.",
+      "NeoTasks and CrecheCad run with Docker Compose. Their READMEs include commands and evaluation walkthroughs.",
   },
 };
 const projects = [
@@ -238,6 +238,42 @@ const projects = [
         "Organization identity comes from the JWT. Owners manage projects and team members; members work on tasks. Updates use concurrency checks and timestamps are stored in UTC. Nginx serves the interface and forwards API requests.",
         "HTTP tests use real PostgreSQL. GitHub Actions builds the Compose stack and runs the flow in Chromium with Playwright, covering signup, permissions, edits, time entries and persistence after container restarts.",
         "This is a demonstration for local evaluation; the README explains how to run it. Password recovery, token renewal, auditing, pagination for the UI contract and migrations are still missing."
+      ]
+    }
+  },
+  {
+    "id": "crechecad",
+    "name": "CrecheCad",
+    "category": "backend",
+    "featured": true,
+    "status": "complete",
+    "image": "assets/crechecad.png",
+    "tech": [
+      "C#",
+      ".NET 10",
+      "EF Core",
+      "SQLite",
+      "Vue / Nuxt",
+      "Docker Compose",
+      "Playwright"
+    ],
+    "code": "https://github.com/LucianoNeo/creche_cad_backend_csharp",
+    "pt": "Cadastro de alunos, turmas, professores e documentos. API C#/.NET, interface Vue/Nuxt e execução com Docker Compose. Revisei o login, as consultas e o backup, e documentei a aplicação com capturas reais.",
+    "en": "Student, class, teacher and document management. C#/.NET API, Vue/Nuxt interface and Docker Compose setup. I revised authentication, queries and backups, and documented the application with real screenshots.",
+    "study": {
+      "pt": [
+        "Manter os cadastros de uma escola organizados, com responsáveis, contatos e documentos vinculados a alunos e professores.",
+        "Desenvolvi o cadastro com C# e Vue/Nuxt. Nesta revisão, atualizei a API para .NET 10, preservei o front original e preparei os containers, os dados fictícios e o roteiro para avaliação.",
+        "Substituí o login no JavaScript por sessão com cookie HttpOnly e proteção CSRF. A listagem de alunos busca o nome da turma em uma consulta. O SQLite mantém os cadastros e os documentos no mesmo backup; usei sua API de snapshot para não copiar um arquivo em uso.",
+        "O GitHub Actions compila os containers e executa sete testes com Playwright. Eles verificam autenticação, validações, CRUD, bloqueio de exclusão de turma ocupada, uploads, backup, edição pelo navegador e navegação em desktop e celular. As capturas do README vêm dessa execução.",
+        "A versão de avaliação usa uma conta administrativa. Ainda faltam usuários por funcionário, auditoria e paginação no servidor. O front está em Vue/Nuxt 2; sua migração está pendente."
+      ],
+      "en": [
+        "Keep school records organized, with guardians, contact details and documents linked to students and teachers.",
+        "I developed the records workflow with C# and Vue/Nuxt. In this revision, I updated the API to .NET 10, kept the original frontend and prepared containers, fictional data and an evaluation walkthrough.",
+        "I replaced browser-only login with an HttpOnly session cookie and CSRF protection. The student list retrieves class names in one query. SQLite keeps records and documents in the same backup; I used its snapshot API instead of copying an active database file.",
+        "GitHub Actions builds the containers and runs seven Playwright tests covering authentication, validation, CRUD, occupied class deletion, uploads, backups, browser edits and desktop/mobile navigation. The README screenshots come from that run.",
+        "The review version has one administrative account. Staff accounts, auditing and server-side pagination are pending. The frontend uses Vue/Nuxt 2 and still needs migration."
       ]
     }
   },
