@@ -57,7 +57,7 @@ interface Iprops {
 export default function CreateTaskModal({ visible, close }: Iprops) {
     const { setError, register, handleSubmit, reset, formState: { errors } } = useForm<FormData>({ resolver });
     const [options,setOptions]=useState<any[]>([]);
-    useEffect(()=>{if(visible)api.get("/project-options").then(({data})=>setOptions(data)).catch(()=>{});},[visible]);
+    useEffect(()=>{if(visible)api.get("/project-options").then(({data})=>setOptions(data)).catch(e=>setError("projectId",{type:"server",message:getApiError(e)}));},[visible]);
     const { setProjects, projects, setTasks, setIsLoading, collaborators, setDayMinutes, setMonthMinutes, SuccessToast, ErrorToast } = useMyContext()
 
 
@@ -119,7 +119,7 @@ export default function CreateTaskModal({ visible, close }: Iprops) {
                                 className="px-4 py-2 rounded bg-black w-full"
                                 {...register("projectId")} >
                                 <option >Escolha o Projeto</option>
-                                {projects!.map((project: any) => (
+                                {options.map((project: any) => (
                                     <option key={project.id} value={project.id}>
                                         {project.name}
                                     </option>

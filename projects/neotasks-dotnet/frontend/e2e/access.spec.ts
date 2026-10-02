@@ -19,6 +19,6 @@ test('email verification, rotating session and password recovery are usable end 
  await page.getByLabel('E-mail',{exact:true}).fill(email);await page.getByLabel('Senha',{exact:true}).fill('RecoveredPassword123!');await page.getByRole('button',{name:'ENTRAR',exact:true}).click();await expect(page.getByText('Olá, Avaliador!')).toBeVisible();
  // An expired access token must renew through the HttpOnly cookie without losing work.
  await page.evaluate(()=>sessionStorage.setItem('neotasks:token','expired'));await page.reload();await expect(page.getByText('Olá, Avaliador!')).toBeVisible();
- expect(await page.evaluate(()=>sessionStorage.getItem('neotasks:token'))).not.toBe('expired');
+ await expect.poll(()=>page.evaluate(()=>sessionStorage.getItem('neotasks:token'))).not.toBe('expired');
  const url=new URL(recovery);expect((await request.post('/app-api/reset-password',{data:{token:url.searchParams.get('token'),password:'AnotherPassword123!'}})).status()).toBe(400);
 });

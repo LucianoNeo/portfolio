@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react"
 import { useMyContext } from "../contexts/MyContext"
+import {api} from "../services/Api";
 import PaginatedItems from "./PaginatedItems"
 import { BiSearchAlt2 } from 'react-icons/bi'
 
 
 function List() {
     const { setFilterBy, setFilter } = useMyContext()
-    const { tasks } = useMyContext()
+    const { tasks,setTasks,filter,filterBy,ErrorToast } = useMyContext()
+    useEffect(()=>{const timer=setTimeout(()=>{sessionStorage.setItem("filterBy:/tasks",filterBy);sessionStorage.setItem("q:/tasks",filter);sessionStorage.setItem("page:/tasks","1");api.get("/tasks",{params:{q:filter,filterBy,page:1}}).then(({data})=>setTasks(data)).catch(ErrorToast);},250);return()=>clearTimeout(timer);},[filter,filterBy])
     const [openFilter, setOpenFilter] = useState(false)
 
 
