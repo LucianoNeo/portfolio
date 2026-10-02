@@ -218,8 +218,7 @@ const projects = [
       "React",
       "PostgreSQL",
       "Docker Compose",
-      "JWT",
-      "Playwright"
+      "JWT"
     ],
     "code": "https://github.com/LucianoNeo/portfolio/tree/main/projects/neotasks-dotnet",
     "pt": "Projetos, tarefas e horas do time com dados separados por organização. Interface React, API .NET e PostgreSQL, com recuperação de senha, renovação de sessão, auditoria e busca paginada. Executável com Docker Compose.",
@@ -254,8 +253,7 @@ const projects = [
       "EF Core",
       "SQLite",
       "Vue 3 / Nuxt 4",
-      "Docker Compose",
-      "Playwright"
+      "Docker Compose"
     ],
     "code": "https://github.com/LucianoNeo/creche_cad_backend_csharp",
     "pt": "Gestão de alunos, turmas, professores e documentos. API .NET, interface Vue 3/Nuxt 4, contas da equipe, permissões, auditoria e backup. O Compose entrega a aplicação com dados fictícios para avaliação.",
