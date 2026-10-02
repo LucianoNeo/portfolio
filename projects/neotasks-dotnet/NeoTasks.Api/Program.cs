@@ -1,0 +1,116 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using NeoTasks;
+
+var builder = WebApplication.CreateBuilder(args);
+var signingKey = builder.Configuration["Jwt:Key"] ?? (builder.Environment.IsDevelopment() ? "local-demo-only-neotasks-key-32-characters" : throw new InvalidOperationException("Set Jwt__Key (32+ characters)."));
+if (Encoding.UTF8.GetByteCount(signingKey) < 32) throw new InvalidOperationException("Jwt__Key must contain at least 32 bytes.");
+builder.Services.AddDbContext<TasksDb>(o => o.UseSqlite(builder.Configuration.GetConnectionString("Database") ?? "Data Source=neotasks.db"));
+builder.Services.AddScoped<PasswordHasher<User>>();
+builder.Services.AddProblemDetails();
+builder.Services.AddOpenApi();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(o =>
+{
+    o.MapInboundClaims = false;
+    o.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true, ValidIssuer = "neotasks", ValidateAudience = true, ValidAudience = "neotasks-api",
+        ValidateLifetime = true, ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey)),
+        NameClaimType = "sub", RoleClaimType = "role", ClockSkew = TimeSpan.FromSeconds(10)
+    };
+});
+builder.Services.AddAuthorization();
+var app = builder.Build();
+app.UseExceptionHandler();
+app.UseAuthentication();
+app.UseAuthorization();
+using (var scope = app.Services.CreateScope()) scope.ServiceProvider.GetRequiredService<TasksDb>().Database.EnsureCreated();
+if (app.Environment.IsDevelopment()) app.MapOpenApi();
+app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
+
+string Token(User u) => new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken("neotasks", "neotasks-api",
+    [new Claim("sub", u.Id.ToString()), new Claim("org", u.OrganizationId.ToString()), new Claim("role", u.Role)],
+    expires: DateTime.UtcNow.AddMinutes(30), signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey)), SecurityAlgorithms.HmacSha256)));
+static Guid Org(ClaimsPrincipal u) => Guid.Parse(u.FindFirstValue("org")!);
+static Guid Actor(ClaimsPrincipal u) => Guid.Parse(u.FindFirstValue("sub")!);
+static bool ValidCredentials(string? email, string? password) => !string.IsNullOrWhiteSpace(email) && email.Length <= 254 && email.Contains('@') && password is { Length: >= 12 and <= 128 };
+
+app.MapPost("/auth/register", async (RegisterRequest r, TasksDb db, PasswordHasher<User> hasher) =>
+{
+    if (string.IsNullOrWhiteSpace(r.Organization) || r.Organization.Length > 120 || !ValidCredentials(r.Email, r.Password)) return Results.BadRequest(new { error = "Organization and email required; password must have 12–128 characters." });
+    var email = r.Email.Trim().ToLowerInvariant();
+    if (await db.Users.AnyAsync(x => x.Email == email)) return Results.Conflict(new { error = "Email already registered." });
+    var org = new Organization { Name = r.Organization.Trim() };
+    var user = new User { OrganizationId = org.Id, Email = email, Role = "Owner" };
+    user.PasswordHash = hasher.HashPassword(user, r.Password);
+    db.Organizations.Add(org); db.Users.Add(user);
+    try { await db.SaveChangesAsync(); } catch (DbUpdateException) { return Results.Conflict(new { error = "Registration conflict." }); }
+    return Results.Created("/auth/login", new { token = Token(user), organizationId = org.Id });
+});
+app.MapPost("/auth/login", async (LoginRequest r, TasksDb db, PasswordHasher<User> hasher) =>
+{
+    if (string.IsNullOrWhiteSpace(r.Email) || string.IsNullOrEmpty(r.Password) || r.Password.Length > 128) return Results.Unauthorized();
+    var user = await db.Users.SingleOrDefaultAsync(x => x.Email == r.Email.Trim().ToLowerInvariant());
+    if (user is null || hasher.VerifyHashedPassword(user, user.PasswordHash, r.Password) == PasswordVerificationResult.Failed) return Results.Unauthorized();
+    return Results.Ok(new { token = Token(user) });
+});
+var api = app.MapGroup("/api").RequireAuthorization();
+api.MapPost("/members", async (MemberRequest r, ClaimsPrincipal actor, TasksDb db, PasswordHasher<User> hasher) =>
+{
+    if (!ValidCredentials(r.Email, r.Password)) return Results.BadRequest();
+    var user = new User { OrganizationId = Org(actor), Email = r.Email.Trim().ToLowerInvariant() };
+    user.PasswordHash = hasher.HashPassword(user, r.Password);
+    db.Users.Add(user);
+    try { await db.SaveChangesAsync(); } catch (DbUpdateException) { return Results.Conflict(); }
+    return Results.Created($"/api/members/{user.Id}", new { user.Id, user.Email, user.Role });
+}).RequireAuthorization(p => p.RequireRole("Owner"));
+api.MapGet("/projects", async (int? page, ClaimsPrincipal actor, TasksDb db) =>
+{
+    var p = Math.Clamp(page ?? 1, 1, 10000); var org = Org(actor);
+    return Results.Ok(await db.Projects.AsNoTracking().Where(x => x.OrganizationId == org).OrderBy(x => x.Name).ThenBy(x => x.Id).Skip((p - 1) * 20).Take(20).ToListAsync());
+});
+api.MapPost("/projects", async (ProjectRequest r, ClaimsPrincipal actor, TasksDb db) =>
+{
+    if (string.IsNullOrWhiteSpace(r.Name) || r.Name.Length > 120) return Results.BadRequest();
+    var project = new WorkProject { OrganizationId = Org(actor), Name = r.Name.Trim() };
+    db.Projects.Add(project); await db.SaveChangesAsync(); return Results.Created($"/api/projects/{project.Id}", project);
+}).RequireAuthorization(p => p.RequireRole("Owner"));
+api.MapPost("/projects/{id:guid}/tasks", async (Guid id, TaskRequest r, ClaimsPrincipal actor, TasksDb db) =>
+{
+    var org = Org(actor);
+    if (!await db.Projects.AnyAsync(x => x.Id == id && x.OrganizationId == org)) return Results.NotFound();
+    if (string.IsNullOrWhiteSpace(r.Title) || r.Title.Length > 200) return Results.BadRequest();
+    var task = new WorkTask { ProjectId = id, OrganizationId = org, Title = r.Title.Trim() };
+    db.Tasks.Add(task); await db.SaveChangesAsync(); return Results.Created($"/api/tasks/{task.Id}", task);
+});
+api.MapGet("/projects/{id:guid}/tasks", async (Guid id, ClaimsPrincipal actor, TasksDb db) =>
+{
+    var org = Org(actor);
+    if (!await db.Projects.AnyAsync(x => x.Id == id && x.OrganizationId == org)) return Results.NotFound();
+    return Results.Ok(await db.Tasks.AsNoTracking().Where(x => x.ProjectId == id && x.OrganizationId == org).OrderBy(x => x.Title).Take(100).ToListAsync());
+});
+api.MapPut("/tasks/{id:guid}", async (Guid id, TaskUpdate r, ClaimsPrincipal actor, TasksDb db) =>
+{
+    var org = Org(actor); var task = await db.Tasks.SingleOrDefaultAsync(x => x.Id == id && x.OrganizationId == org);
+    if (task is null) return Results.NotFound();
+    if (task.Version != r.Version) return Results.Conflict(new { error = "Stale version. Reload the task." });
+    task.Completed = r.Completed; task.Version++;
+    try { await db.SaveChangesAsync(); } catch (DbUpdateConcurrencyException) { return Results.Conflict(); }
+    return Results.Ok(task);
+});
+api.MapPost("/tasks/{id:guid}/time", async (Guid id, TimeRequest r, ClaimsPrincipal actor, TasksDb db) =>
+{
+    var org = Org(actor);
+    if (!await db.Tasks.AnyAsync(x => x.Id == id && x.OrganizationId == org)) return Results.NotFound();
+    if (r.Seconds is <= 0 or > 86400) return Results.BadRequest(new { error = "Seconds must be between 1 and 86400." });
+    var entry = new TimeEntry { OrganizationId = org, TaskId = id, UserId = Actor(actor), Seconds = r.Seconds };
+    db.TimeEntries.Add(entry); await db.SaveChangesAsync(); return Results.Created($"/api/time/{entry.Id}", entry);
+});
+app.Run();
+public partial class Program { }

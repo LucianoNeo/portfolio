@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Luciano Neo — Resumo profissional</title>
+    <style>
+      body {
+        font:
+          16px/1.65 Arial,
+          sans-serif;
+        color: #18273a;
+        background: #eef2f7;
+        margin: 0;
+      }
+      main {
+        max-width: 800px;
+        padding: 45px;
+        margin: 35px auto;
+        background: white;
+      }
+      h1 {
+        line-height: 1.2;
+      }
+      h2 {
+        font-size: 21px;
+        color: #174477;
+        margin-top: 30px;
+      }
+      a {
+        color: #174477;
+      }
+      nav {
+        display: flex;
+        gap: 25px;
+      }
+      button {
+        padding: 10px;
+        cursor: pointer;
+      }
+      section[hidden] {
+        display: none;
+      }
+      @media (max-width: 600px) {
+        main {
+          margin: 0;
+          padding: 25px;
+        }
+      }
+      @media print {
+        body {
+          background: white;
+        }
+        main {
+          padding: 0;
+          margin: 0;
+          max-width: none;
+        }
+        nav {
+          display: none;
+        }
+        a {
+          color: inherit;
+        }
+        h2 {
+          break-after: avoid;
+        }
+        li {
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <nav>
+        <a href="index.html">← Portfolio</a
+        ><button id="print">Imprimir / Save PDF</button
+        ><a id="switch" href="?lang=en">English</a>
+      </nav>
+      <h1>Luciano dos Santos Bueno</h1>
+      <p>C# / .NET · Back-end<br />Curitiba, Brasil / Brazil</p>
+      <p>
+        <a href="mailto:tec.info.luciano@hotmail.com"
+          >tec.info.luciano@hotmail.com</a
+        ><br /><a href="https://github.com/LucianoNeo">github.com/LucianoNeo</a>
+        · <a href="https://www.linkedin.com/in/lucianoneo">LinkedIn</a>
+      </p>
+      <section id="pt">
+        <h2>Resumo profissional</h2>
+        <p>
+          Foco atual em desenvolvimento back-end C# e .NET, APIs REST e
+          integração de dados. Trajetória em desenvolvimento full stack, suporte
+          técnico e DevOps.
+        </p>
+        <h2>Tecnologias</h2>
+        <p>
+          C#, .NET, ASP.NET Core, Node.js, Python, React, Next.js, TypeScript,
+          React Native, Prisma e MySQL. Nos novos laboratórios: EF Core, SQLite,
+          JWT e xUnit. Estudos e prática em Docker, Kubernetes e AWS.
+        </p>
+        <h2>Projetos de demonstração</h2>
+        <ul>
+          <li>
+            <b>NeoTasks .NET:</b> API com organizações, JWT, permissões, tarefas
+            e horas. Testes de isolamento e concorrência.
+          </li>
+          <li>
+            <b>Raid Booking API:</b> capacidade limitada, transações e
+            idempotência. Teste concorrente da última vaga.
+          </li>
+          <li>
+            <b>Webhook Inbox:</b> HMAC, inbox persistente e worker com
+            tentativas e fila de falhas.
+          </li>
+          <li>
+            <b>NeoTasks:</b> aplicação React/Fastify com PostgreSQL e Prisma,
+            desenvolvida como desafio técnico.
+          </li>
+        </ul>
+        <h2>Experiência e formação</h2>
+        <p>
+          Histórico profissional e formação disponíveis no
+          <a href="https://www.linkedin.com/in/lucianoneo">LinkedIn</a>. Este
+          resumo reúne foco e projetos; cargos e períodos serão acrescentados
+          após confirmação.
+        </p>
+      </section>
+      <section id="en" hidden>
+        <h2>Professional summary</h2>
+        <p>
+          Current focus on C# and .NET back-end development, REST APIs and data
+          integration. Background in full stack development, technical support
+          and DevOps.
+        </p>
+        <h2>Technologies</h2>
+        <p>
+          C#, .NET, ASP.NET Core, Node.js, Python, React, Next.js, TypeScript,
+          React Native, Prisma and MySQL. New labs use EF Core, SQLite, JWT and
+          xUnit. Studies and practice in Docker, Kubernetes and AWS.
+        </p>
+        <h2>Demonstration projects</h2>
+        <ul>
+          <li>
+            <b>NeoTasks .NET:</b> organizations, JWT, permissions, tasks and
+            time tracking. Isolation and concurrency tests.
+          </li>
+          <li>
+            <b>Raid Booking API:</b> limited capacity, transactions and
+            idempotency. Concurrent last-seat test.
+          </li>
+          <li>
+            <b>Webhook Inbox:</b> HMAC, persistent inbox and a worker with
+            retries and dead letters.
+          </li>
+          <li>
+            <b>NeoTasks:</b> React/Fastify application with PostgreSQL and
+            Prisma, built as a technical challenge.
+          </li>
+        </ul>
+        <h2>Experience and education</h2>
+        <p>
+          Professional history and education are available on
+          <a href="https://www.linkedin.com/in/lucianoneo">LinkedIn</a>. This
+          summary covers focus and projects; roles and dates will be added after
+          confirmation.
+        </p>
+      </section>
+      <script>
+        const en = new URLSearchParams(location.search).get("lang") === "en";
+        document.getElementById("pt").hidden = en;
+        document.getElementById("en").hidden = !en;
+        document.documentElement.lang = en ? "en" : "pt-BR";
+        document.title = en
+          ? "Luciano Neo — Professional summary"
+          : "Luciano Neo — Resumo profissional";
+        const s = document.getElementById("switch");
+        s.textContent = en ? "Português" : "English";
+        s.href = en ? "?lang=pt" : "?lang=en";
+        document.getElementById("print").onclick = () => window.print();
+      </script>
+    </main>
+  </body>
+</html>

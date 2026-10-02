@@ -1,74 +1,459 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>Certificard - Luciano Neo's Portfolio</title>
-  <link rel="stylesheet" href="./style.css">
-
-</head>
-<body>
-<!-- partial:index.partial.html -->
-<body>
-  <div class="container">
-    <header class="cabecalho">
-      <div class="perfil">
-        <img src="https://github.com/LucianoNeo.png" />
-        <div class="titulo">
-          <h1>Luciano Neo</h1>
-          <h3>Front-end Student</h3>
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b0d19" />
+    <meta
+      name="description"
+      content="Luciano dos Santos Bueno: desenvolvimento back-end C# e .NET, APIs, dados e integrações. Código, estudos de caso e projetos full stack."
+    />
+    <title>Luciano Neo — Desenvolvedor Back-end C# / .NET</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b0d19'/%3E%3Cpath d='M12 45V18h7l26 27V18h7v27h-7L19 18v27z' fill='%23e9c77b'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#projects"
+      >Ir para projetos / Skip to projects</a
+    >
+    <div class="site-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="Luciano Neo, início"
+          ><span class="brand-mark">N</span
+          ><span>LUCIANO<span class="brand-accent">NEO</span></span></a
+        >
+        <nav class="nav" aria-label="Navegação principal">
+          <a href="#projects" data-i18n="navProjects">Projetos</a
+          ><a href="#about" data-i18n="navAbout">Sobre</a
+          ><a href="#contact" data-i18n="navContact">Contato</a>
+        </nav>
+        <div class="top-actions">
+          <button
+            id="lang-toggle"
+            class="lang-toggle"
+            type="button"
+            aria-label="Switch to English"
+          >
+            EN <span aria-hidden="true">↗</span></button
+          ><a class="top-contact" href="#contact" data-i18n="talk"
+            >Vamos conversar</a
+          >
         </div>
-      </div>
-      <div class="tema">
-        <button onclick="mudaTema()">Change Theme</button>
-      </div>
-    </header>
-    <main class="projetos">
-      <div class="challenge">
-        <h1>WIP</h1>
-        <div class="imagens">
-        <div class="descricao">
-        <span>Expense Control </span>
-        <a href="https://lucianoneo.github.io/bill-control">
-          <img src="https://www.sebrae.com.br/file_source/Sebrae/Portal%20Sebrae/UFs/AP/Imagens/221x199xCalculadora.png.pagespeed.ic.kaF-IdKHaC.png"></a></div>
-      </div>
-      
-      <div class="challenge">
-        <h1>Challenge #7DaysOfCode Alura</h1>
-        <a href="https://github.com/LucianoNeo/bootcamps">
-          <img src="./img/js-logo.png"></a>
-          <a href="https://github.com/LucianoNeo/bootcamps">
-            <img src="./img/html-css.jpg"></a>
-      </div>
-      <div>
-        <h1>Projects #imersaodev Alura</h1>
-      </div>
-      <div class="projetos-itens">
-        <li><a href="https://lucianoneo.github.io/bootcamps/Alura/ImersaoDev/pokemon-elmachips">
-          <img src="./img/pokemon.png"></a></li>
-          <li><a href="https://lucianoneo.github.io/bootcamps/Alura/ImersaoDev/neoflix">
-            <img src="./img/neoflix.png"></a></li>
-        <li><a href="https://lucianoneo.github.io/bootcamps/Alura/ImersaoDev/conversor-de-moedas">
-            <img src="./img/conversorDeMoedas.png"></a></li>
-        <li><a href="https://lucianoneo.github.io/bootcamps/Alura/ImersaoDev/conversor-de-temperatura">
-            <img src="./img/conversorDeTemperatura.png"></a></li>
-      </div>
+      </header>
+      <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-grid"></div>
+          <div class="hero-copy">
+            <p class="eyebrow">
+              <span class="eyebrow-line"></span
+              ><span data-i18n="heroEyebrow"
+                >LUCIANO DOS SANTOS BUENO · CURITIBA, BRASIL</span
+              >
+            </p>
+            <h1 id="hero-title">
+              <span data-i18n="heroLine1">Desenvolvedor</span><br /><em
+                data-i18n="heroLine2"
+                >Back-end C# / .NET</em
+              >
+            </h1>
+            <p class="hero-description" data-i18n="heroDesc">
+              APIs, persistência de dados e integrações. Minha experiência full
+              stack conecta o back-end ao produto; meu foco atual é aprofundar a
+              engenharia com C# e .NET.
+            </p>
+            <div class="hero-buttons">
+              <a class="button button-primary" href="#projects"
+                ><span data-i18n="explore">Conhecer projetos</span
+                ><span aria-hidden="true">✦</span></a
+              ><a
+                class="button button-outline"
+                href="https://github.com/LucianoNeo"
+                target="_blank"
+                rel="noopener noreferrer"
+                >GitHub <span aria-hidden="true">↗</span></a
+              ><a
+                class="text-link resume-link"
+                data-resume
+                href="resume.html?lang=pt"
+                data-i18n="resume"
+                >Resumo profissional</a
+              >
+            </div>
+            <div class="hero-meta">
+              <span
+                ><b>C#</b> / .NET
+                <span data-i18n="chapter">FOCO ATUAL</span></span
+              ><span class="hero-meta-rule"></span
+              ><span data-i18n="location">APIs · DADOS · INTEGRAÇÕES</span>
+            </div>
+          </div>
+          <div class="hero-visual" aria-label="Perfil de Luciano">
+            <div class="orbit orbit-one"></div>
+            <div class="orbit orbit-two"></div>
+            <div class="visual-spark spark-one">✧</div>
+            <div class="visual-spark spark-two">✦</div>
+            <div class="character-card">
+              <div class="card-top">
+                <span
+                  ><span data-i18n="playerProfile"
+                    >PERFIL DO DESENVOLVEDOR</span
+                  >
+                  <b>#001</b></span
+                ><span class="diamond">◆</span>
+              </div>
+              <div class="portrait">
+                <img
+                  src="assets/linkedin-photo.jpg"
+                  alt="Foto de Luciano dos Santos Bueno"
+                />
+              </div>
+              <div class="character-info">
+                <span class="level"
+                  ><span data-i18n="className">CLASSE</span>
+                  <span>BACK-END / .NET</span></span
+                ><strong>Luciano Neo</strong
+                ><span class="class-label" data-i18n="role"
+                  >Engenheiro de Software</span
+                >
+              </div>
+              <div class="skill-line">
+                <span>BACK-END</span><b>C# · ASP.NET Core</b>
+              </div>
+              <div class="skill-line">
+                <span>FULL STACK</span><b>React · Next.js</b>
+              </div>
+            </div>
+            <div class="floating-badge badge-code">
+              &lt;/&gt;<small>CODE</small>
+            </div>
+            <div class="floating-badge badge-exp">+XP<small>BUILD</small></div>
+          </div>
+        </section>
+        <section class="evidence-section" aria-labelledby="evidence-title">
+          <h2 id="evidence-title" data-i18n="evidenceTitle">
+            Evidências no código
+          </h2>
+          <div class="evidence-grid">
+            <a href="#case-neotasks-dotnet"
+              ><span>01 / AUTH</span>
+              <h3 data-i18n="evidence1">Autorização & dados</h3>
+              <p data-i18n="evidence1text">
+                Isolamento entre organizações e regras de acesso no NeoTasks
+                .NET.
+              </p></a
+            ><a href="#case-raid-booking"
+              ><span>02 / CONCURRENCY</span>
+              <h3 data-i18n="evidence2">Concorrência & idempotência</h3>
+              <p data-i18n="evidence2text">
+                Reserva da última vaga e repetição segura de requisições no Raid
+                Booking.
+              </p></a
+            ><a href="#case-webhook-inbox"
+              ><span>03 / INTEGRATIONS</span>
+              <h3 data-i18n="evidence3">Integrações & recuperação</h3>
+              <p data-i18n="evidence3text">
+                Assinatura HMAC, deduplicação e tentativas no Webhook Inbox.
+              </p></a
+            >
+          </div>
+        </section>
+        <section id="projects" class="projects-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">
+                <span class="eyebrow-line"></span
+                ><span data-i18n="selectedWork">TRABALHOS SELECIONADOS</span>
+              </p>
+              <h2>
+                <span data-i18n="questLog">Código com contexto</span
+                ><span class="heading-dot">.</span>
+              </h2>
+            </div>
+            <p data-i18n="projectsIntro">
+              Conheça o problema, as decisões técnicas e as evidências de cada
+              projeto. Os novos laboratórios .NET têm código, testes e
+              instruções para execução local.
+            </p>
+          </div>
+          <div class="project-toolbar">
+            <div class="filters" role="group" aria-label="Filtrar projetos">
+              <button
+                class="filter active"
+                data-filter="featured"
+                type="button"
+                data-i18n="filterFeatured"
+                aria-pressed="true"
+              >
+                Destaques</button
+              ><button
+                class="filter"
+                data-filter="all"
+                type="button"
+                data-i18n="filterAll"
+              >
+                Todos</button
+              ><button
+                class="filter"
+                data-filter="backend"
+                type="button"
+                data-i18n="filterBackend"
+              >
+                Back-end .NET</button
+              ><button
+                class="filter"
+                data-filter="apps"
+                type="button"
+                data-i18n="filterApps"
+              >
+                Full stack
+              </button>
+            </div>
+            <span id="project-count" class="project-count"></span>
+          </div>
+          <div id="project-grid" class="project-grid">
+            <article class="project-card">
+              <div class="project-image">
+                <img
+                  src="assets/neotasks-dotnet.svg"
+                  alt="NeoTasks .NET"
+                  width="960"
+                  height="540"
+                />
+              </div>
+              <div class="project-body">
+                <span class="project-number"
+                  >Laboratório .NET · execução local</span
+                >
+                <h3>NeoTasks .NET</h3>
+                <p>
+                  Organizações, projetos, tarefas e horas com JWT e isolamento
+                  de dados.
+                </p>
+                <a
+                  class="text-link"
+                  href="https://github.com/LucianoNeo/portfolio/tree/main/projects/neotasks-dotnet"
+                  >Código e documentação ↗</a
+                >
+              </div>
+            </article>
+            <article class="project-card">
+              <div class="project-image">
+                <img
+                  src="assets/raid-booking.svg"
+                  alt="Raid Booking API"
+                  width="960"
+                  height="540"
+                />
+              </div>
+              <div class="project-body">
+                <span class="project-number"
+                  >Laboratório .NET · execução local</span
+                >
+                <h3>Raid Booking API</h3>
+                <p>
+                  Reservas com capacidade limitada, transações e idempotência.
+                </p>
+                <a
+                  class="text-link"
+                  href="https://github.com/LucianoNeo/portfolio/tree/main/projects/raid-booking"
+                  >Código e documentação ↗</a
+                >
+              </div>
+            </article>
+            <article class="project-card">
+              <div class="project-image">
+                <img
+                  src="assets/webhook-inbox.svg"
+                  alt="Webhook Inbox"
+                  width="960"
+                  height="540"
+                />
+              </div>
+              <div class="project-body">
+                <span class="project-number"
+                  >Laboratório .NET · execução local</span
+                >
+                <h3>Webhook Inbox</h3>
+                <p>
+                  Eventos assinados, deduplicação e processamento persistente.
+                </p>
+                <a
+                  class="text-link"
+                  href="https://github.com/LucianoNeo/portfolio/tree/main/projects/webhook-inbox"
+                  >Código e documentação ↗</a
+                >
+              </div>
+            </article>
+          </div>
+          <p class="lab-note" data-i18n="labNote">
+            Os laboratórios são projetos de demonstração. Sua documentação
+            descreve o escopo implementado e as evoluções necessárias para uso
+            em produção.
+          </p>
+          <p class="more-projects">
+            <span data-i18n="moreProjects">Quer ver mais?</span>
+            <a
+              href="https://github.com/LucianoNeo?tab=repositories"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><span data-i18n="allGithub"
+                >Explore todos os repositórios no GitHub</span
+              >
+              ↗</a
+            >
+          </p>
+        </section>
+        <section id="creative" class="projects-section creative-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="creativeEyebrow">SIDE QUESTS</p>
+              <h2 data-i18n="creativeTitle">Jogos & experimentos</h2>
+            </div>
+            <p data-i18n="creativeIntro">
+              Projetos que exploram interfaces, ferramentas e meu interesse por
+              jogos de RPG eletrônico.
+            </p>
+          </div>
+          <div id="creative-grid" class="project-grid"></div>
+        </section>
+        <section id="about" class="about-section">
+          <div class="about-inner">
+            <div class="about-left">
+              <p class="eyebrow">
+                <span class="eyebrow-line"></span
+                ><span data-i18n="aboutEyebrow">TRAJETÓRIA &amp; DIREÇÃO</span>
+              </p>
+              <h2>
+                <span data-i18n="aboutTitle"
+                  >Back-end como base.<br />Produto como destino</span
+                ><span class="heading-dot">.</span>
+              </h2>
+              <p data-i18n="aboutText">
+                Meu foco atual é C# e .NET, APIs REST e integração de dados. A
+                trajetória em desenvolvimento full stack, suporte técnico e
+                DevOps amplia minha visão sobre o ciclo de uma aplicação.
+              </p>
+              <p data-i18n="aboutText2">
+                Também construo com Node.js, Python, React, Next.js, TypeScript
+                e React Native. Docker, Kubernetes e AWS fazem parte dos meus
+                estudos e da minha prática em infraestrutura.
+              </p>
+              <a
+                href="https://www.linkedin.com/in/lucianoneo"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-link"
+                ><span data-i18n="linkedinProfile"
+                  >Experiência e formação no LinkedIn</span
+                >
+                ↗</a
+              >
+            </div>
+            <div class="about-right">
+              <div class="loadout-heading">
+                <span data-i18n="loadout">TECNOLOGIAS &amp; PRÁTICA</span
+                ><span>✦</span>
+              </div>
+              <div class="loadout-row">
+                <span class="loadout-icon">01</span>
+                <div>
+                  <strong>Back-end</strong
+                  ><small>C# · .NET · Node.js · Python</small>
+                </div>
+              </div>
+              <div class="loadout-row">
+                <span class="loadout-icon">02</span>
+                <div>
+                  <strong data-i18n="apisData">APIs & dados</strong
+                  ><small
+                    >REST · ASP.NET Core · EF Core · SQLite · Prisma ·
+                    MySQL</small
+                  >
+                </div>
+              </div>
+              <div class="loadout-row">
+                <span class="loadout-icon">03</span>
+                <div>
+                  <strong data-i18n="cloudDevops"
+                    >Cloud &amp; DevOps · estudos</strong
+                  ><small>Docker · Kubernetes · AWS</small>
+                </div>
+              </div>
+              <div class="loadout-row">
+                <span class="loadout-icon">04</span>
+                <div>
+                  <strong data-i18n="frontMobile">Front-end & mobile</strong
+                  ><small>React · Next.js · TypeScript · React Native</small>
+                </div>
+              </div>
+              <div class="loadout-foot">
+                <span data-i18n="basedIn">BASE: CURITIBA, BRASIL</span
+                ><span class="mini-star">✧</span>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="contact" class="contact-section">
+          <div class="contact-glyph" aria-hidden="true">✦</div>
+          <p class="eyebrow centered">
+            <span data-i18n="nextQuest">PRÓXIMA MISSÃO</span>
+          </p>
+          <h2 data-i18n="contactTitle">Vamos conversar sobre back-end?</h2>
+          <p data-i18n="contactText">
+            Para oportunidades em desenvolvimento C# / .NET, meu código e
+            estudos de caso estão disponíveis acima. Entre em contato por e-mail
+            ou pelo LinkedIn.
+          </p>
+          <div class="contact-actions">
+            <a
+              class="button button-primary"
+              href="mailto:tec.info.luciano@hotmail.com"
+              ><span data-i18n="emailMe">Enviar e-mail</span
+              ><span aria-hidden="true">✉</span></a
+            ><a
+              class="button button-outline"
+              href="https://www.linkedin.com/in/lucianoneo"
+              target="_blank"
+              rel="noopener noreferrer"
+              >LinkedIn <span aria-hidden="true">↗</span></a
+            >
+          </div>
+        </section>
       </main>
-    <footer>
-      <a href="https://github.com/Lucianoneo">
-        <img src="https://cdn.iconscout.com/icon/free/png-256/github-3089487-2567439.png"></a>
-      <a href="https://codepen.io/lucianoneo">
-        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111501.png"></a>
-      <a href="https://www.linkedin.com/in/luciano-dos-santos-bueno-58363373/">
-        <img src="https://brandlogos.net/wp-content/uploads/2016/06/linkedin-logo.png"></a>
-      <a href="https://twitter.com/lucianoneo">
-        <img src="https://icons-for-free.com/iconfiles/png/512/logo+twitter+twitter+logo+icon-1320195967937423316.png"></a>      
-    </footer>
-    <h3>2022</h3>
-  </div>
-  
-</body>
-<!-- partial -->
-  <script  src="./script.js"></script>
-
-</body>
+      <dialog id="case-dialog" aria-labelledby="case-title">
+        <button id="case-close" class="case-close" type="button">
+          Fechar estudo de caso ×
+        </button>
+        <div id="case-content"></div>
+      </dialog>
+      <footer class="footer">
+        <span>© <span id="year"></span> Luciano Neo</span
+        ><span data-i18n="footerMade">Feito com código e curiosidade.</span>
+        <div>
+          <a
+            href="https://github.com/LucianoNeo"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          ><a
+            href="https://www.linkedin.com/in/lucianoneo"
+            target="_blank"
+            rel="noopener noreferrer"
+            >LinkedIn</a
+          >
+        </div>
+      </footer>
+    </div>
+    <script src="script.js" defer></script>
+  </body>
 </html>

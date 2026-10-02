@@ -1,0 +1,25 @@
+# Verification record — 2026-10-01
+
+## Back-end
+
+SDK: .NET 10.0.401. ASP.NET / EF packages: 10.0.12.
+
+`dotnet test projects/BackendLabs.slnx --configuration Release`
+
+- NeoTasks: organization isolation, role restriction, invalid time, stale version, authentication and missing credentials.
+- Raid Booking: 20 players concurrently contesting one seat, repeated booking/cancellation and cancellation ownership.
+- Webhook Inbox: 10 duplicate deliveries, payload conflict, signature and timestamp validation, persistent pending event after restart, retry/dead-letter with controlled time.
+
+Tests use temporary SQLite databases; no production or private data. No throughput claims are derived from the concurrency tests.
+
+## Website
+
+- PT/EN content, project filtering and case-study dialog reviewed in the browser.
+- Desktop and 390px mobile layouts reviewed.
+- Mobile navigation exposes Projects, About and Contact.
+- Printable professional summary includes both languages; a complete employment timeline requires Luciano's confirmed CV.
+- `node --check` validates JavaScript syntax.
+
+## Limits
+
+Docker CLI is installed, but the Docker Desktop engine is not running; Dockerfiles and Compose configuration were prepared but not run here. The APIs are not deployed publicly. They use EnsureCreated and development configuration for easy local evaluation. Production requires migrations, identity lifecycle and operational configuration appropriate to each project.

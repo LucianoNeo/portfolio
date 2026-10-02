@@ -1,0 +1,27 @@
+@base = http://localhost:5082
+@playerToken = paste-player-token
+@raid = paste-raid-id
+@reservation = paste-reservation-id
+@futureUnix = replace-with-future-unix-timestamp
+
+### Anonymous player credential
+POST {{base}}/players
+Content-Type: application/json
+
+{"name":"Neo"}
+
+### Create future raid; development admin key only
+POST {{base}}/raids
+X-Admin-Key: local-demo-admin-key
+Content-Type: application/json
+
+{"name":"Legendary raid","capacity":1,"startsAt":{{futureUnix}}}
+
+### Book; replay with same key returns same reservation
+POST {{base}}/raids/{{raid}}/reservations
+X-Player-Token: {{playerToken}}
+Idempotency-Key: local-demo-booking-1
+
+### Cancel; repeating is safe
+DELETE {{base}}/reservations/{{reservation}}
+X-Player-Token: {{playerToken}}
