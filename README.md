@@ -31,7 +31,7 @@ dotnet test projects/BackendLabs.slnx --configuration Release
 node --check script.js
 ```
 
-The website workflow validates JavaScript and publishes only static assets. The back-end workflow restores, builds and runs all integration tests. Docker recipes are optional.
+The GitHub Actions workflow validates website JavaScript and restores, builds and runs all back-end integration tests. The public static Site is published separately. Docker recipes are optional.
 
 ## Content accuracy
 
