@@ -4,6 +4,9 @@ import { BsCardList } from 'react-icons/bs'
 import { BiTask } from 'react-icons/bi'
 import { BsGithub } from 'react-icons/bs'
 
+import {useContext} from "react";
+import {AuthContext} from "../contexts/AuthContext";
+
 interface Iprops {
     open: boolean,
     setClose: Function,
@@ -12,9 +15,10 @@ interface Iprops {
 }
 
 function Menu({ open, setPage, setClose, close }: Iprops) {
+    const {role}=useContext(AuthContext);
 
     return (
-        <nav className={`flex flex-col w-52 h-80 font-bold bg-orange-500 rounded-sm px-1  absolute transition-all z-50 overflow-y-hidden
+        <nav className={`flex flex-col w-52 h-auto font-bold bg-orange-500 rounded-sm px-1  absolute transition-all z-50 overflow-y-hidden
         ${open ? 'left-0' : 'left-[-170px]'}`}>
             <ul className='flex flex-col gap-4 py-4 overflow-hidden p-1'>
                 <li
@@ -63,11 +67,13 @@ function Menu({ open, setPage, setClose, close }: Iprops) {
                         setClose(!close)
                     }}
                     className='flex gap-4 hover:text-gray-900 text-right justify-end cursor-pointer'>
-                    <span>RELATÓRIO</span>
+                    <span>RELATÃ“RIO</span>
                     <BsCardList size={26} />
 
                 </li>
 
+                <li onClick={()=>{setPage('account');setClose(!close);}} className="text-right cursor-pointer">MINHA CONTA</li>
+                {role==='Owner'&&<li onClick={()=>{setPage('audit');setClose(!close);}} className="text-right cursor-pointer">AUDITORIA</li>}
                 <li className='flex gap-4 hover:text-gray-900 text-left justify-end cursor-pointer text-xs mt-4 flex-col'>
                     <a href="https://github.com/LucianoNeo" target='_blank' rel='noopener noreferrer'>
                         <div className='flex justify-between'>

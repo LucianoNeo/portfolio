@@ -28,6 +28,15 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
+      - name: Prepare versioned PostgreSQL schema
+        run: |
+          dotnet restore projects/neotasks-dotnet/NeoTasks.Api
+          if ! find projects/neotasks-dotnet/NeoTasks.Api -name '*CompleteTasks.cs' | grep -q .; then
+            dotnet tool install dotnet-ef --tool-path /tmp/ef --version 10.0.12
+            /tmp/ef/dotnet-ef migrations add CompleteTasks --project projects/neotasks-dotnet/NeoTasks.Api
+          fi
+          mkdir -p schema
+          cp projects/neotasks-dotnet/NeoTasks.Api/Migrations/*.cs schema/
       - name: Test API boundaries and frontend contract
         run: dotnet test projects/neotasks-dotnet/NeoTasks.Tests --configuration Release --logger trx
       - name: Build and start the complete application
@@ -54,6 +63,8 @@ jobs:
         with:
           name: neotasks-verification
           path: |
+            schema/
+            projects/neotasks-dotnet/frontend/captures/
             projects/neotasks-dotnet/NeoTasks.Tests/TestResults/
             projects/neotasks-dotnet/frontend/playwright-report/
             projects/neotasks-dotnet/frontend/test-results/

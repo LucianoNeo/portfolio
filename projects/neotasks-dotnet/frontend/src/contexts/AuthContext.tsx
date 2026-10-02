@@ -16,6 +16,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [error, setError] = useState<string | null>(null);
     const [activeButton, setActiveButton] = useState(true);
     function signOut() {
+        void api.post("/logout").catch(()=>{});
         ['user', 'token', 'role'].forEach(key => sessionStorage.removeItem('neotasks:' + key));
         setUser(null); setToken(null); setRole('Member'); setError(null); setActiveButton(true);
     }

@@ -17,17 +17,15 @@ public static class FrontendEndpoints
 
     public static void MapFrontendEndpoints(this WebApplication app, string signingKey)
     {
-        app.MapPost("/app-api/login", async (FrontendLogin r, TasksDb db, PasswordHasher<User> hasher) =>
+        app.MapPost("/app-api/login", async (FrontendLogin r, TasksDb db, PasswordHasher<User> hasher,AccountAccess access,HttpContext ctx) =>
         {
             var email = r.Email ?? r.Username;
             if (string.IsNullOrWhiteSpace(email) || email.Length > 254 || r.Password is not { Length: > 0 and <= 128 }) return Error("E-mail ou senha inválidos.", 401);
             var user = await db.Users.SingleOrDefaultAsync(x => x.Email == email.Trim().ToLowerInvariant());
             if (user is null || hasher.VerifyHashedPassword(user, user.PasswordHash, r.Password) == PasswordVerificationResult.Failed) return Error("E-mail ou senha inválidos.", 401);
-            var token = new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken("neotasks", "neotasks-api",
-                [new Claim("sub", user.Id.ToString()), new Claim("org", user.OrganizationId.ToString()), new Claim("role", user.Role)],
-                expires: DateTime.UtcNow.AddMinutes(30), signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey)), SecurityAlgorithms.HmacSha256)));
-            return Results.Ok(new { token, username = string.IsNullOrEmpty(user.Name) ? user.Email : user.Name, role = user.Role });
-        });
+            await access.StartSession(user,ctx);
+            return Results.Ok(new { token=access.Jwt(user), username = string.IsNullOrEmpty(user.Name) ? user.Email : user.Name, role = user.Role });
+        }).RequireRateLimiting("access");
 
         var ui = app.MapGroup("/app-api").RequireAuthorization();
         ui.MapGet("/validatetoken", () => Results.Ok(new { valid = true }));

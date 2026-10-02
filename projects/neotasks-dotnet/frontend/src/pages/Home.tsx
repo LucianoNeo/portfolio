@@ -3,6 +3,8 @@ import { ToastContainer } from "react-toastify";
 import Collaborators from "../components/Collaborators";
 import Dashboard from "../components/Dashboard";
 import Header from "../components/Header";
+import Account from "../components/Account";
+import Audit from "../components/Audit";
 import List from "../components/List";
 import Loading from "../components/Loading";
 import Menu from "../components/Menu";
@@ -51,6 +53,8 @@ function Home() {
         {page == 'tasks' && <Tasks tasks={tasks} />}
         {page == 'collaborators' && <Collaborators />}
         {page == 'list' && <List />}
+        {page === 'account' && <Account />}
+        {page === 'audit' && <Audit />}
       </div>
 
     </>

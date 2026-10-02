@@ -12,11 +12,14 @@ var signingKey = builder.Configuration["Jwt:Key"] ?? (builder.Environment.IsDeve
 if (Encoding.UTF8.GetByteCount(signingKey) < 32) throw new InvalidOperationException("Jwt__Key must contain at least 32 bytes.");
 builder.Services.AddDbContext<TasksDb>(o => o.UseNpgsql(builder.Configuration.GetConnectionString("Database") ?? "Host=localhost;Database=neotasks;Username=neotasks;Password=neotasks-local-only"));
 builder.Services.AddScoped<PasswordHasher<User>>();
+builder.Services.AddScoped<AccountAccess>();
+builder.Services.AddRateLimiter(o=>{o.RejectionStatusCode=429;o.AddPolicy("access",c=>System.Threading.RateLimiting.RateLimitPartition.GetFixedWindowLimiter(c.Connection.RemoteIpAddress?.ToString()??"unknown",_=>new System.Threading.RateLimiting.FixedWindowRateLimiterOptions{PermitLimit=30,Window=TimeSpan.FromMinutes(1),QueueLimit=0}));});
 builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(o =>
 {
     o.MapInboundClaims = false;
+    o.Events=new JwtBearerEvents{OnTokenValidated=async c=>{var db=c.HttpContext.RequestServices.GetRequiredService<TasksDb>();var id=c.Principal?.FindFirstValue("sub");var u=Guid.TryParse(id,out var uid)?await db.Users.AsNoTracking().SingleOrDefaultAsync(x=>x.Id==uid):null;if(u is null||u.SecurityStamp!=c.Principal?.FindFirstValue("stamp"))c.Fail("Revoked session");}};
     o.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true, ValidIssuer = "neotasks", ValidateAudience = true, ValidAudience = "neotasks-api",
@@ -28,20 +31,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 builder.Services.AddAuthorization();
 var app = builder.Build();
 app.UseExceptionHandler();
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
-using (var scope = app.Services.CreateScope()) await scope.ServiceProvider.GetRequiredService<TasksDb>().Database.EnsureCreatedAsync();
+app.Use(async(ctx,next)=>{var db=ctx.RequestServices.GetRequiredService<TasksDb>();db.AuditActor=ctx.User.FindFirstValue("sub")??"anonymous";if(Guid.TryParse(ctx.User.FindFirstValue("org"),out var org))db.AuditOrganization=org;await next();});
+using (var scope = app.Services.CreateScope()) await scope.ServiceProvider.GetRequiredService<TasksDb>().Database.MigrateAsync();
 if (app.Environment.IsDevelopment()) app.MapOpenApi();
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 
 string Token(User u) => new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken("neotasks", "neotasks-api",
-    [new Claim("sub", u.Id.ToString()), new Claim("org", u.OrganizationId.ToString()), new Claim("role", u.Role)],
+    [new Claim("sub", u.Id.ToString()), new Claim("org", u.OrganizationId.ToString()), new Claim("role", u.Role),new Claim("stamp",u.SecurityStamp)],
     expires: DateTime.UtcNow.AddMinutes(30), signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey)), SecurityAlgorithms.HmacSha256)));
 static Guid Org(ClaimsPrincipal u) => Guid.Parse(u.FindFirstValue("org")!);
 static Guid Actor(ClaimsPrincipal u) => Guid.Parse(u.FindFirstValue("sub")!);
 static bool ValidCredentials(string? email, string? password) => !string.IsNullOrWhiteSpace(email) && email.Length <= 254 && email.Contains('@') && password is { Length: >= 12 and <= 128 };
 
-async Task<IResult> RegisterAccount(RegisterRequest r, TasksDb db, PasswordHasher<User> hasher)
+async Task<IResult> RegisterAccount(RegisterRequest r, TasksDb db, PasswordHasher<User> hasher,AccountAccess access,HttpContext ctx)
 {
     if (string.IsNullOrWhiteSpace(r.Organization) || r.Organization.Length > 120 || r.Name?.Length > 120 || !ValidCredentials(r.Email, r.Password)) return Results.BadRequest(new { error = "Informe a organização e um e-mail válido. A senha deve ter entre 12 e 128 caracteres." });
     var email = r.Email.Trim().ToLowerInvariant();
@@ -51,17 +56,18 @@ async Task<IResult> RegisterAccount(RegisterRequest r, TasksDb db, PasswordHashe
     user.PasswordHash = hasher.HashPassword(user, r.Password);
     db.Organizations.Add(org); db.Users.Add(user);
     try { await db.SaveChangesAsync(); } catch (DbUpdateException) { return Results.Conflict(new { error = "Registration conflict." }); }
+    await access.SendLink(user,"verify"); await access.StartSession(user,ctx);
     return Results.Created("/auth/login", new { token = Token(user), organizationId = org.Id, username = user.Name, role = user.Role });
 }
-app.MapPost("/auth/register", RegisterAccount);
-app.MapPost("/app-api/register", RegisterAccount);
-app.MapPost("/auth/login", async (LoginRequest r, TasksDb db, PasswordHasher<User> hasher) =>
+app.MapPost("/auth/register", RegisterAccount).RequireRateLimiting("access");
+app.MapPost("/app-api/register", RegisterAccount).RequireRateLimiting("access");
+app.MapPost("/auth/login", async (LoginRequest r, TasksDb db, PasswordHasher<User> hasher,AccountAccess access,HttpContext ctx) =>
 {
     if (string.IsNullOrWhiteSpace(r.Email) || string.IsNullOrEmpty(r.Password) || r.Password.Length > 128) return Results.Unauthorized();
     var user = await db.Users.SingleOrDefaultAsync(x => x.Email == r.Email.Trim().ToLowerInvariant());
     if (user is null || hasher.VerifyHashedPassword(user, user.PasswordHash, r.Password) == PasswordVerificationResult.Failed) return Results.Unauthorized();
-    return Results.Ok(new { token = Token(user) });
-});
+    await access.StartSession(user,ctx);return Results.Ok(new { token = Token(user) });
+}).RequireRateLimiting("access");
 var api = app.MapGroup("/api").RequireAuthorization();
 api.MapPost("/members", async (MemberRequest r, ClaimsPrincipal actor, TasksDb db, PasswordHasher<User> hasher) =>
 {
@@ -116,5 +122,6 @@ api.MapPost("/tasks/{id:guid}/time", async (Guid id, TimeRequest r, ClaimsPrinci
     db.TimeEntries.Add(entry); await db.SaveChangesAsync(); return Results.Created($"/api/time/{entry.Id}", entry);
 });
 app.MapFrontendEndpoints(signingKey);
+app.MapAccessEndpoints();
 app.Run();
 public partial class Program { }

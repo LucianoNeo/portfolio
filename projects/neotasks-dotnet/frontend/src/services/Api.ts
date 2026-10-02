@@ -18,9 +18,15 @@ api.interceptors.request.use(config => {
     if (config.url === '/monthtotalminutes') config.params = { ...config.params, offsetMinutes };
     return config;
 });
-api.interceptors.response.use(response => response, error => {
-    if (error.response?.status === 401 && error.config?.url !== '/login') {
-        window.dispatchEvent(new Event('neotasks:session-expired'));
+let renewal: Promise<string> | null = null;
+api.interceptors.response.use(response => response, async error => {
+    const config=error.config;
+    if(error.response?.status===401 && !config?._retried && !['/login','/refresh','/register'].includes(config?.url)) {
+        config._retried=true;
+        try {
+            if(!renewal)renewal=axios.post('/app-api/refresh').then(({data})=>{sessionStorage.setItem('neotasks:token',data.token);return data.token;}).finally(()=>{renewal=null;});
+            const token=await renewal;config.headers.Authorization='Bearer '+token;return api.request(config);
+        } catch {window.dispatchEvent(new Event('neotasks:session-expired'));}
     }
     return Promise.reject(error);
 });
