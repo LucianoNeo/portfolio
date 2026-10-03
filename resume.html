@@ -72,6 +72,7 @@
       }
 
 @media print { @page { size: A4; margin: 14mm; } body { font-size: 10pt; line-height: 1.3; background: white; } main { margin: 0; padding: 0; max-width: none; } h1 { font-size: 21pt; } h2 { font-size: 12pt; margin: 13pt 0 5pt; break-after: avoid; color: #000; } p, li { orphans: 3; widows: 3; } a { color: inherit; } }
+.cv-downloads { margin: 20px 0; font-size: 14px; } .cv-download-links { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-top: 8px; } nav { flex-wrap: wrap; } @media print { .cv-downloads { display: none; } }
 </style>
 </head>
 <body>
@@ -79,6 +80,7 @@
 <nav>
 <a href="index.html">← Portfolio</a><button id="print">Imprimir / Save PDF</button><a href="?lang=en" id="switch">English</a>
 </nav>
+<aside class="cv-downloads" aria-label="Downloads"><strong id="download-label">Baixar currículo</strong><div class="cv-download-links"><a href="assets/cv/Luciano_Bueno_CV_2026_PT.pdf" download>Português · PDF</a><a href="assets/cv/Luciano_Bueno_CV_2026_PT.docx" download>Português · Word</a><a href="assets/cv/Luciano_Bueno_CV_2026_EN.pdf" download>English · PDF</a><a href="assets/cv/Luciano_Bueno_CV_2026_EN.docx" download>English · Word</a></div></aside>
 <h1>Luciano dos Santos Bueno</h1>
 <p>C# / .NET · Back-end<br/>Curitiba, Brasil / Brazil</p>
 <p>
@@ -116,6 +118,8 @@
         const s = document.getElementById("switch");
         s.textContent = en ? "Português" : "English";
         s.href = en ? "?lang=pt" : "?lang=en";
+        document.getElementById("download-label").textContent = en ? "Download résumé" : "Baixar currículo";
+        document.getElementById("print").textContent = en ? "Print" : "Imprimir";
         document.getElementById("print").onclick = () => window.print();
       </script>
 </main>
