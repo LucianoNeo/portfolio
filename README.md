@@ -1,6 +1,6 @@
 # Luciano Neo — Software Engineer portfolio
 
-Portfólio em português e inglês, com experiência profissional, formação e projetos selecionados. O visual tem referências aos menus de RPGs eletrônicos.
+Portfólio em português e inglês, com experiência profissional, formação, currículo para download e projetos selecionados. O visual tem referências aos menus de RPGs eletrônicos.
 
 ## Site
 
@@ -12,13 +12,13 @@ HTML, CSS e JavaScript, sem dependências de build. O workflow `pages.yml` publi
 
 | Projeto | O que mostra |
 | --- | --- |
-| [NeoTasks · React + .NET](projects/neotasks-dotnet/README.md) | Interface React integrada à API .NET, PostgreSQL, recuperação de senha, renovação de sessão, auditoria, tarefas, horas e Docker Compose |
+| [NeoTasks · React + .NET](https://github.com/LucianoNeo/neotasks) | Interface React integrada à API .NET, PostgreSQL, recuperação de senha, renovação de sessão, auditoria, tarefas, horas e Docker Compose |
 | [CrecheCad](https://github.com/LucianoNeo/creche_cad_backend_csharp) | Cadastro escolar com API .NET, EF Core, SQLite, Vue 3/Nuxt 4, perfis da equipe, auditoria, documentos, backup e Docker Compose |
 | [NeoScan Raids](https://github.com/LucianoNeo/neoscan-raids) | Aplicação Next.js e TypeScript para encontrar raids e organizar partidas |
 | [Pokémon Sleep Companion](https://github.com/LucianoNeo/pokemon-sleep-companion) | Guia multilíngue em Nuxt e Vuetify |
 | [Pokémon GO 2D](https://github.com/LucianoNeo/pogo2d) | Jogo com exploração, captura, inventário e interface para desktop e celular |
 
-NeoTasks e CrecheCad incluem instruções para avaliação com Docker Compose. O site do portfólio é estático e não hospeda suas APIs.
+O repositório próprio do NeoTasks e o CrecheCad incluem instruções para avaliação com Docker Compose. O site do portfólio é estático e não hospeda suas APIs.
 
 ## Fontes
 
@@ -28,6 +28,6 @@ As imagens dos projetos vêm de seus respectivos repositórios. As capturas do N
 
 ## English
 
-Portuguese/English software engineering portfolio covering C#/.NET, Node.js, Python, React, Vue and infrastructure. Selected work: NeoTasks with React, .NET and PostgreSQL; CrecheCad with .NET, SQLite and Vue/Nuxt; NeoScan Raids; Pokémon Sleep Companion; and Pokémon GO 2D. Each project links to its source. The NeoTasks and CrecheCad READMEs include a Docker Compose evaluation walkthrough.
+Portuguese/English software engineering portfolio covering C#/.NET, Node.js, Python, React, Vue and infrastructure. Selected work: NeoTasks with React, .NET and PostgreSQL; CrecheCad with .NET, SQLite and Vue/Nuxt; NeoScan Raids; Pokémon Sleep Companion; and Pokémon GO 2D. Each project links to its own repository. The NeoTasks and CrecheCad READMEs include a Docker Compose evaluation walkthrough. NeoTasks has a dedicated repository at https://github.com/LucianoNeo/neotasks.
 
 Development assistance: Codex.

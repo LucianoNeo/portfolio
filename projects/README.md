@@ -16,7 +16,7 @@ Na pasta `neotasks-dotnet`, execute `docker compose up --build` e abra http://lo
 
 O Compose desta pasta mantém as três APIs nas portas localhost 5081, 5082 e 5083. Ele inclui um PostgreSQL para NeoTasks; as outras APIs usam volumes SQLite. Para avaliar a interface NeoTasks, prefira o Compose da pasta daquele projeto.
 
-Os projetos usam .NET 10. `Directory.Build.props` fornece o framework e as opções de compilação; inclua esse arquivo se extrair uma pasta para outro repositório.
+As aplicações .NET nesta pasta usam `Directory.Build.props` para compartilhar o framework e as opções de compilação. O NeoTasks tem um repositório próprio: https://github.com/LucianoNeo/neotasks.
 
 Os testes usam requisições HTTP e bancos reais. Para executar `dotnet test BackendLabs.slnx --configuration Release`, é preciso configurar uma instância PostgreSQL de testes em `NEOTASKS_TEST_DATABASE`, com um usuário que possa criar e excluir bancos isolados. Os detalhes estão no README do NeoTasks. As APIs de reservas e webhooks usam arquivos temporários SQLite. O GitHub Actions prepara esses bancos no runner.
 

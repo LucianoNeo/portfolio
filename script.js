@@ -224,7 +224,7 @@ const projects = [
       "Docker Compose",
       "JWT"
     ],
-    "code": "https://github.com/LucianoNeo/portfolio/tree/main/projects/neotasks-dotnet",
+    "code": "https://github.com/LucianoNeo/neotasks",
     "pt": "Projetos, tarefas e horas do time com dados separados por organização. Interface React, API .NET e PostgreSQL, com recuperação de senha, renovação de sessão, auditoria e busca paginada. Executável com Docker Compose.",
     "en": "Team projects, tasks and time entries with separate organization data. React interface, .NET API and PostgreSQL, with password recovery, session renewal, audit history and paginated search. Runs with Docker Compose.",
     "study": {
@@ -233,14 +233,14 @@ const projects = [
         "Adaptei minha interface React para uma API C#/.NET e PostgreSQL. Completei cadastro, equipe, tarefas, apontamentos, confirmação de e-mail, recuperação de senha e auditoria. O Compose também entrega uma caixa de e-mail para testar os fluxos.",
         "Owner gerencia projetos e colaboradores; membros trabalham nas tarefas. O acesso usa JWT e um refresh token rotativo em cookie HttpOnly. A busca e a paginação são feitas no servidor. Horários ficam em UTC, atualizações usam controle de concorrência e migrations atualizam o banco sem apagar os dados da versão anterior.",
         "Testes de integração usam PostgreSQL real e verificam isolamento, permissões, concorrência, horários, paginação e atualização do esquema. Playwright percorre a interface, a confirmação de e-mail, a recuperação de senha, a renovação de sessão e a persistência após reiniciar os containers.",
-        "Na pasta projects/neotasks-dotnet, execute docker compose up --build e abra localhost:8080. Crie sua organização e use localhost:8025 para ler os e-mails da demonstração. O README traz as capturas e o roteiro de avaliação."
+        "Clone o repositório NeoTasks, execute docker compose up --build e abra localhost:8080. Crie sua organização e use localhost:8025 para ler os e-mails da demonstração. O README traz as capturas e o roteiro de avaliação."
       ],
       "en": [
         "Bring together the team's projects, tasks and time entries while separating each organization's data.",
         "I adapted my React interface to a C#/.NET API and PostgreSQL. Signup, team management, tasks, time entries, email confirmation, password recovery and auditing are included. Compose also provides an email inbox to test the workflows.",
         "Owners manage projects and team members; members work on tasks. Authentication uses JWT and a rotating refresh token in an HttpOnly cookie. Search and pagination run on the server. Timestamps use UTC, updates check concurrency, and migrations upgrade the database while preserving data from the previous release.",
         "Integration tests use real PostgreSQL and cover isolation, permissions, concurrency, time calculations, pagination and schema upgrades. Playwright exercises the interface, email confirmation, password recovery, session renewal and persistence after container restarts.",
-        "In projects/neotasks-dotnet, run docker compose up --build and open localhost:8080. Create an organization and use localhost:8025 to read demo emails. The README includes screenshots and a review walkthrough."
+        "Clone the NeoTasks repository, run docker compose up --build and open localhost:8080. Create an organization and use localhost:8025 to read demo emails. The README includes screenshots and a review walkthrough."
       ]
     }
   },
