@@ -1,4 +1,4 @@
-# Luciano Neo — C# / .NET portfolio
+# Luciano Neo — Software Engineer portfolio
 
 Portfólio em português e inglês, com experiência profissional, formação e projetos selecionados. O visual tem referências aos menus de RPGs eletrônicos.
 
@@ -28,6 +28,6 @@ As imagens dos projetos vêm de seus respectivos repositórios. As capturas do N
 
 ## English
 
-Portuguese/English portfolio focused on C#/.NET back-end development. Selected work: NeoTasks with React, .NET and PostgreSQL; CrecheCad with .NET, SQLite and Vue/Nuxt; NeoScan Raids; Pokémon Sleep Companion; and Pokémon GO 2D. Each project links to its source. The NeoTasks and CrecheCad READMEs include a Docker Compose evaluation walkthrough.
+Portuguese/English software engineering portfolio covering C#/.NET, Node.js, Python, React, Vue and infrastructure. Selected work: NeoTasks with React, .NET and PostgreSQL; CrecheCad with .NET, SQLite and Vue/Nuxt; NeoScan Raids; Pokémon Sleep Companion; and Pokémon GO 2D. Each project links to its source. The NeoTasks and CrecheCad READMEs include a Docker Compose evaluation walkthrough.
 
 Development assistance: Codex.

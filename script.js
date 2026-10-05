@@ -32,15 +32,15 @@ const translations = {
     navContact: "Contato",
     talk: "Entrar em contato",
     heroEyebrow: "LUCIANO DOS SANTOS BUENO · CURITIBA, BRASIL",
-    heroLine1: "Desenvolvedor",
-    heroLine2: "Back-end C# / .NET",
+    heroLine1: "Engenheiro",
+    heroLine2: "de Software",
     heroDesc:
-      "Atuo na IngaCode como desenvolvedor PJ desde 2023, com foco em APIs C#/.NET. Participo das entregas dos requisitos ao deploy e resolvo falhas em produção, com experiência também em Vue.js e Nuxt.",
+      "Desenvolvo aplicações com C#/.NET, Node.js, Python, React e Vue. Na IngaCode, atuo como PJ desde 2023, participando das entregas dos requisitos ao deploy e da resolução de falhas em produção.",
     explore: "Conhecer projetos",
-    chapter: "FOCO ATUAL",
-    location: "APIs · DADOS · INTEGRAÇÕES",
-    role: "Desenvolvedor de Software",
-    playerProfile: "PERFIL DO DESENVOLVEDOR",
+    chapter: "DESENVOLVIMENTO FULL STACK",
+    location: "APIs · INTERFACES · INFRAESTRUTURA",
+    role: "Engenheiro de Software",
+    playerProfile: "PERFIL PROFISSIONAL",
     className: "CLASSE",
     profileLabel: "Perfil de Luciano",
     avatarAlt: "Foto de Luciano dos Santos Bueno",
@@ -68,9 +68,9 @@ const translations = {
     aboutText:
       "Comecei no suporte técnico, trabalhando com computadores, redes e servidores. Passei para o desenvolvimento web em 2022 e, desde 2023, presto serviços à IngaCode como PJ, com C#/.NET, Vue.js e Nuxt.",
     aboutText2:
-      "Meu foco é desenvolvimento back-end em C#/.NET. A experiência com infraestrutura e front-end me ajuda a investigar problemas que passam pela API, pelo banco e pela interface.",
+      "Atuo em back-end e front-end com C#/.NET, Node.js, Python, React e Vue. A experiência com infraestrutura me ajuda a investigar problemas entre API, banco de dados, interface e ambiente de execução.",
     experienceHeading: "Experiência",
-    experienceScope: "Desenvolvimento de aplicações web com Vue.js, Nuxt, C# e .NET.",
+    experienceScope: "Desenvolvimento de aplicações com C#/.NET, Node.js, Python, React e Vue.",
     educationHeading: "Formação",
     educationCourse: "Redes de Computadores",
     educationSchool: "FAE Centro Universitário · São José dos Pinhais",
@@ -85,7 +85,7 @@ const translations = {
     nextQuest: "PRÓXIMA MISSÃO / CONTATO",
     contactTitle: "Entre em contato",
     contactText:
-      "Busco oportunidades com foco em back-end C#/.NET. Você pode falar comigo por e-mail ou LinkedIn.",
+      "Busco oportunidades em engenharia de software, com atuação em back-end, front-end ou full stack. Você pode falar comigo por e-mail ou LinkedIn.",
     emailMe: "Enviar e-mail",
     resume: "Ver currículo",
     downloadCv: "Baixar currículo",
@@ -136,15 +136,15 @@ const translations = {
     navContact: "Contact",
     talk: "Get in touch",
     heroEyebrow: "LUCIANO DOS SANTOS BUENO · CURITIBA, BRAZIL",
-    heroLine1: "Back-end developer",
-    heroLine2: "C# / .NET",
+    heroLine1: "Software",
+    heroLine2: "Engineer",
     heroDesc:
-      "I have worked as a contractor at IngaCode since 2023, focusing on C#/.NET APIs. I contribute from requirements through deployment and fix production issues, with experience in Vue.js and Nuxt as well.",
+      "I build applications with C#/.NET, Node.js, Python, React and Vue. I have worked as a contractor at IngaCode since 2023, contributing from requirements through deployment and resolving production issues.",
     explore: "Explore projects",
-    chapter: "CURRENT FOCUS",
-    location: "APIs · DATA · INTEGRATIONS",
-    role: "Software Developer",
-    playerProfile: "DEVELOPER PROFILE",
+    chapter: "FULL STACK DEVELOPMENT",
+    location: "APIs · INTERFACES · INFRASTRUCTURE",
+    role: "Software Engineer",
+    playerProfile: "PROFESSIONAL PROFILE",
     className: "CLASS",
     profileLabel: "Luciano profile",
     avatarAlt: "Portrait of Luciano dos Santos Bueno",
@@ -172,9 +172,9 @@ const translations = {
     aboutText:
       "I started in technical support, working with computers, networks and servers. I moved into web development in 2022 and have provided contracting services to IngaCode with C#/.NET, Vue.js and Nuxt since 2023.",
     aboutText2:
-      "My focus is C#/.NET back-end development. My experience with infrastructure and front ends helps me investigate problems across the API, database and interface.",
+      "I work across back ends and front ends with C#/.NET, Node.js, Python, React and Vue. My infrastructure background helps me investigate issues across APIs, databases, interfaces and runtime environments.",
     experienceHeading: "Experience",
-    experienceScope: "Web application development with Vue.js, Nuxt, C# and .NET.",
+    experienceScope: "Application development with C#/.NET, Node.js, Python, React and Vue.",
     educationHeading: "Education",
     educationCourse: "Computer Networks",
     educationSchool: "FAE Centro Universitário · São José dos Pinhais",
@@ -189,7 +189,7 @@ const translations = {
     nextQuest: "NEXT QUEST / CONTACT",
     contactTitle: "Get in touch",
     contactText:
-      "I am looking for opportunities focused on C#/.NET back-end development. Reach me by email or LinkedIn.",
+      "I am looking for software engineering opportunities across back-end, front-end and full stack development. Reach me by email or LinkedIn.",
     emailMe: "Send an email",
     resume: "View résumé",
     downloadCv: "Download résumé",
@@ -366,12 +366,12 @@ function render() {
   document.documentElement.lang = currentLang === "pt" ? "pt-BR" : "en";
   document.title =
     currentLang === "pt"
-      ? "Luciano Neo — Desenvolvedor Back-end C# / .NET"
-      : "Luciano Neo — C# / .NET Back-end Developer";
+      ? "Luciano Neo — Engenheiro de Software"
+      : "Luciano Neo — Software Engineer";
   document.querySelector('meta[name="description"]').content =
     currentLang === "pt"
-      ? "Luciano dos Santos Bueno: desenvolvimento back-end C# e .NET, APIs, dados e integrações. Código, estudos de caso e projetos full stack."
-      : "Luciano dos Santos Bueno: C# and .NET back-end development, APIs, data and integrations. Source code, case studies and full stack projects.";
+      ? "Luciano dos Santos Bueno, engenheiro de software. C#/.NET, Node.js, Python, React e Vue. Aplicações web, APIs, integrações e infraestrutura."
+      : "Luciano dos Santos Bueno, software engineer. C#/.NET, Node.js, Python, React and Vue. Web applications, APIs, integrations and infrastructure.";
   document
     .querySelectorAll("[data-i18n]")
     .forEach((el) => (el.textContent = t[el.dataset.i18n]));
