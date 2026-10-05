@@ -1,8 +1,4 @@
 <Solution>
-  <Folder Name="/neotasks-dotnet/">
-    <Project Path="neotasks-dotnet/NeoTasks.Api/NeoTasks.Api.csproj" />
-    <Project Path="neotasks-dotnet/NeoTasks.Tests/NeoTasks.Tests.csproj" />
-  </Folder>
   <Folder Name="/raid-booking/">
     <Project Path="raid-booking/RaidBooking.Api/RaidBooking.Api.csproj" />
     <Project Path="raid-booking/RaidBooking.Tests/RaidBooking.Tests.csproj" />

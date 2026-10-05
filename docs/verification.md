@@ -4,9 +4,8 @@
 
 SDK: .NET 10.0.401. ASP.NET / EF packages: 10.0.12.
 
-`dotnet test projects/BackendLabs.slnx --configuration Release`
+`dotnet test projects/BackendLabs.slnx --configuration Release` (at the time of this record, the solution also included NeoTasks; its current source and CI live in the [dedicated repository](https://github.com/LucianoNeo/neotasks)).
 
-- NeoTasks: organization isolation, role restriction, invalid time, stale version, authentication and missing credentials.
 - Raid Booking: 20 players concurrently contesting one seat, repeated booking/cancellation and cancellation ownership.
 - Webhook Inbox: 10 duplicate deliveries, payload conflict, signature and timestamp validation, persistent pending event after restart, retry/dead-letter with controlled time.
 
